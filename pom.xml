@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.make.ext</groupId>
+    <artifactId>ext-hor</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.4.0-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>2.2.28</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>1.4.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup</groupId>
+                <artifactId>javapoet</artifactId>
+                <version>1.13.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.36</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j2-impl</artifactId>
+                <version>2.24.3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.4.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>2.2.28</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+            <version>1.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>2.24.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.2</version>
+                <configuration>
+                    <overwrite>true</overwrite>
+                    <verbose>true</verbose>
+                    <contexts>MySQL</contexts>
+                    <configurationFile>${project.basedir}/config.xml</configurationFile>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.microsoft.sqlserver</groupId>
+                        <artifactId>mssql-jdbc</artifactId>
+                        <version>12.8.1.jre8</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.20</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>make-generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <rules>
+                        <banDuplicatePomDependencyVersions/>
+                        <requireJavaVersion>
+                            <version>1.8</version>
+                        </requireJavaVersion>
+                        <banVulnerable implementation="org.sonatype.ossindex.maven.enforcer.BanVulnerableDependencies">
+                            <level>WARN</level>
+                        </banVulnerable>
+                    </rules>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.sonatype.ossindex.maven</groupId>
+                        <artifactId>ossindex-maven-enforcer-rules</artifactId>
+                        <version>3.2.0</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.30.0</version>
+                <configuration>
+                    <!-- optional: limit format enforcement to just the files changed by this feature branch -->
+                    <formats>
+                        <!-- you can define as many formats as you want, each is independent -->
+                        <format>
+                            <!-- define the files to apply to -->
+                            <includes>
+                                <include>*.md</include>
+                                <include>.gitignore</include>
+                                <include>src/main/java/**/*.java</include>
+                            </includes>
+                            <!-- define the steps to apply to those files -->
+                            <trimTrailingWhitespace/>
+                            <endWithNewline/>
+                            <indent>
+                                <tabs>true</tabs>
+                                <spacesPerTab>4</spacesPerTab>
+                            </indent>
+                        </format>
+                    </formats>
+                    <!-- define a language-specific format -->
+                    <java>
+                        <toggleOffOn>
+                            <off>fmt:off</off>
+                            <on>fmt:on</on>
+                        </toggleOffOn>
+                        <!-- These are the defaults, you can override if you want -->
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                        </includes>
+                        <importOrder>
+                            <!-- or a custom ordering -->
+                            <wildcardsLast>false</wildcardsLast>
+                            <!-- Optional, default false. Sort wildcard import after specific imports -->
+                            <order>java,javax,org,com,com.diffplug,,\\#com.diffplug,\\#</order>
+                            <!-- or use <file>${project.basedir}/eclipse.importorder</file> -->
+                            <!-- you can use an empty string for all the imports you didn't specify explicitly, and '\\#` prefix for static imports. -->
+                        </importOrder>
+                        <!-- self-explanatory -->
+                        <googleJavaFormat>
+                            <version>1.7</version>
+                            <style>AOSP</style>
+                            <groupArtifact>com.google.googlejavaformat:google-java-format</groupArtifact>
+                        </googleJavaFormat>
+                        <eclipse>
+                            <file>eclipse-formatter.xml</file>
+                            <!-- optional -->
+                        </eclipse>
+                        <removeUnusedImports/>
+                        <formatAnnotations/>
+                        <!-- fixes formatting of type annotations, see below -->
+                        <licenseHeader>
+                            <content>/* (C)$YEAR */</content>
+                            <!-- or <file>${project.basedir}/license-header</file> -->
+                        </licenseHeader>
+                    </java>
+                    <pom>
+                        <!-- These are the defaults, you can override if you want -->
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+                        <sortPom>
+                            <encoding>UTF-8</encoding>
+                            <!-- The encoding of the pom files -->
+                            <lineSeparator>${line.separator}</lineSeparator>
+                            <!-- line separator to use -->
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <!-- Should empty elements be expanded-->
+                            <spaceBeforeCloseEmptyElement>false</spaceBeforeCloseEmptyElement>
+                            <!-- Should a space be added inside self-closing elements-->
+                            <keepBlankLines>true</keepBlankLines>
+                            <!-- Keep empty lines -->
+                            <nrOfIndentSpace>2</nrOfIndentSpace>
+                            <!-- Indentation -->
+                            <indentBlankLines>false</indentBlankLines>
+                            <!-- Should empty lines be indented -->
+                            <indentSchemaLocation>false</indentSchemaLocation>
+                            <!-- Should schema locations be indended -->
+                            <sortOrderFile/>
+                            <!-- Custom sort order of elements: https://raw.githubusercontent.com/Ekryd/sortpom/master/sorter/src/main/resources/custom_1.xml -->
+                            <sortDependencies/>
+                            <!-- Sort dependencies: https://github.com/Ekryd/sortpom/wiki/SortDependencies-->
+                            <sortDependencyExclusions/>
+                            <!-- Sort dependency exclusions: https://github.com/Ekryd/sortpom/wiki/SortDependencies-->
+                            <sortPlugins/>
+                            <!-- Sort plugins: https://github.com/Ekryd/sortpom/wiki/SortPlugins -->
+                            <sortProperties>false</sortProperties>
+                            <!-- Sort properties -->
+                            <sortModules>false</sortModules>
+                            <!-- Sort modules -->
+                            <sortExecutions>false</sortExecutions>
+                            <!-- Sort plugin executions -->
+                        </sortPom>
+                    </pom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-fmt</id>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.8.2.0</version>
+                <configuration>
+                    <skip>true</skip>
+                    <effort>max</effort>
+                    <!-- [:min|less|default|more|max] -->
+                    <threshold>High</threshold>
+                    <!-- Low, Medium, High -->
+                    <htmlOutput>true</htmlOutput>
+                    <xmlOutput>true</xmlOutput>
+                    <failOnError>true</failOnError>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <maxHeap>256</maxHeap>
+                    <includeTests>false</includeTests>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>1.12.0</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="thor" targetRuntime="MyBatis3DynamicSql">
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.ext.plugins.ExtThorPlugin"/>
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="useLegacyGeneratedAnnotation" value="true"/>
+        </commentGenerator>
+
+        <connectionFactory>
+            <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        </connectionFactory>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="org.ext.example" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <javaClientGenerator targetPackage="org.ext.example" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="check_item"/>
+
+    </context>
+
+</generatorConfiguration>
