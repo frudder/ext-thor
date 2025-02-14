@@ -1,4 +1,4 @@
-package org.make.ext.core;
+package org.make.ext.generated;
 
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.slf4j.Logger;

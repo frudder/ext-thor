@@ -1,18 +1,16 @@
 package org.make.ext.plugins;
 
-import org.make.ext.core.EntityGenerated;
-import org.make.ext.core.MakeGenerated;
-import org.mybatis.generator.api.FullyQualifiedTable;
+import org.make.ext.generated.EntityGenerated;
+import org.make.ext.generated.MakeGenerated;
+import org.make.ext.generated.MapperGenerated;
 import org.mybatis.generator.api.GeneratedFile;
-import org.mybatis.generator.api.GeneratedJavaFile;
-import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
+import org.mybatis.generator.api.dom.java.CompilationUnitVisitor;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.JavaVisibility;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.Parameter;
+import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.java.TopLevelEnumeration;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,38 +26,70 @@ public final class ExtThorPlugin extends PluginAdapter {
 
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles() {
-        List<MakeGenerated> iterable = newArrayList(EntityGenerated.create(context));
+        List<MakeGenerated> iterable = newArrayList(
+                EntityGenerated.create(context),
+                MapperGenerated.create(context));
         return iterable.stream().map(MakeGenerated::makeGeneratedFile).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean modelBaseRecordClassGenerated(TopLevelClass compilationUnit, IntrospectedTable introspectedTable) {
+        compilationUnit = compilationUnit.accept(new CompilationUnitVisitor<TopLevelClass>() {
+            @Override
+            public TopLevelClass visit(TopLevelClass compilationUnit) {
+
+                String name = context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractEntity";
+                compilationUnit.setSuperClass(new FullyQualifiedJavaType(name));
+                return compilationUnit;
+            }
+
+            @Override
+            public TopLevelClass visit(TopLevelEnumeration compilationUnit) {
+                return null;
+            }
+
+            @Override
+            public TopLevelClass visit(Interface compilationUnit) {
+                return null;
+            }
+        });
+        return super.modelBaseRecordClassGenerated(compilationUnit, introspectedTable);
+    }
+
+    @Override
+    public boolean clientGenerated(Interface compilationUnit, IntrospectedTable introspectedTable) {
+        compilationUnit = compilationUnit.accept(new CompilationUnitVisitor<>() {
+            @Override
+            public Interface visit(TopLevelClass topLevelClass) {
+                return null;
+            }
+
+            @Override
+            public Interface visit(TopLevelEnumeration topLevelEnumeration) {
+                return null;
+            }
+
+            @Override
+            public Interface visit(Interface compilationUnit) {
+                Interface copy = new Interface(compilationUnit.getType());
+                String name = context.getJavaClientGeneratorConfiguration().getTargetPackage() + "." + "MapperAdapter";
+                FullyQualifiedJavaType mapper = new FullyQualifiedJavaType(name);
+                mapper.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+                copy.addSuperInterface(mapper);
+                return copy;
+            }
+        });
+        return super.clientGenerated(compilationUnit, introspectedTable);
+    }
 
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
-        final List<GeneratedFile> item = newArrayList();
-        final FullyQualifiedTable v = introspectedTable.getFullyQualifiedTable();
-        v.getDomainObjectName();
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType("org.ext.example.service." + v.getDomainObjectName() + "Service");
-        Interface serviceInterface = new Interface(type);
-        serviceInterface.setVisibility(JavaVisibility.PUBLIC);
-
-        if (!introspectedTable.hasPrimaryKeyColumns())
-            throw new IllegalArgumentException();
-
-        serviceInterface.addImportedType(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + v.getDomainObjectName()));
-
-        Method findOne = new Method("findOne");
-        findOne.setVisibility(JavaVisibility.PUBLIC);
-        findOne.setReturnType(new FullyQualifiedJavaType(v.getDomainObjectName()));
-        findOne.setAbstract(true);
-        IntrospectedColumn primaryKey = introspectedTable.getPrimaryKeyColumns().get(0);
-        findOne.addParameter(new Parameter(primaryKey.getFullyQualifiedJavaType(), primaryKey.getJavaProperty()));
 
 
-//        findOne.addParameter(new Parameter(type, introspectedTable));
-        serviceInterface.addMethod(findOne);
-        GeneratedJavaFile gjf = new GeneratedJavaFile(serviceInterface, "src/main/java", context.getJavaFormatter());
-        item.add(gjf);
-        return item;
+
+
+
+        return super.contextGenerateAdditionalFiles(introspectedTable);
     }
 
 }
