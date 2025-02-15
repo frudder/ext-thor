@@ -1,9 +1,15 @@
 package org.make.ext.plugins;
 
+import com.google.common.collect.Sets;
+import jakarta.annotation.Generated;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.make.ext.DefaultJavaField;
 import org.make.ext.generated.EntityGenerated;
 import org.make.ext.generated.MakeGenerated;
 import org.make.ext.generated.MapperGenerated;
 import org.mybatis.generator.api.GeneratedFile;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.CompilationUnitVisitor;
@@ -12,11 +18,17 @@ import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TopLevelEnumeration;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.stream.Collectors.toList;
+import static org.make.ext.generated.MakeGenerated.GENERATED;
 
+/**
+ *
+ */
 public final class ExtThorPlugin extends PluginAdapter {
 
     @Override
@@ -29,17 +41,33 @@ public final class ExtThorPlugin extends PluginAdapter {
         List<MakeGenerated> iterable = newArrayList(
                 EntityGenerated.create(context),
                 MapperGenerated.create(context));
-        return iterable.stream().map(MakeGenerated::makeGeneratedFile).collect(Collectors.toList());
+        return iterable.stream().map(MakeGenerated::makeGeneratedFile).collect(toList());
     }
 
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass compilationUnit, IntrospectedTable introspectedTable) {
-        compilationUnit = compilationUnit.accept(new CompilationUnitVisitor<TopLevelClass>() {
+        compilationUnit.accept(new CompilationUnitVisitor<TopLevelClass>() {
             @Override
             public TopLevelClass visit(TopLevelClass compilationUnit) {
-
-                String name = context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractEntity";
-                compilationUnit.setSuperClass(new FullyQualifiedJavaType(name));
+                FullyQualifiedJavaType base = new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractEntity");
+                if (!introspectedTable.hasPrimaryKeyColumns()) {
+                    throw new IllegalArgumentException();
+                }
+                List<IntrospectedColumn> columns = introspectedTable.getPrimaryKeyColumns();
+                base.addTypeArgument(new FullyQualifiedJavaType(columns.get(0).getFullyQualifiedJavaType().getShortName()));
+                compilationUnit.setSuperClass(base);
+                compilationUnit.addAnnotation("@Data");
+                compilationUnit.addAnnotation("@EqualsAndHashCode(callSuper = true)");
+                compilationUnit.addAnnotation(GENERATED);
+                compilationUnit.addImportedTypes(Sets.newHashSet(
+                        new FullyQualifiedJavaType(Serial.class.getName()),
+                        new FullyQualifiedJavaType(Generated.class.getName()),
+                        new FullyQualifiedJavaType(Data.class.getName()),
+                        new FullyQualifiedJavaType(EqualsAndHashCode.class.getName())
+                ));
+                DefaultJavaField.SERIAL_VERSION_UID.apply(compilationUnit);
+                compilationUnit.addSuperInterface(new FullyQualifiedJavaType(Serializable.class.getName()));
+                compilationUnit.getMethods().clear();
                 return compilationUnit;
             }
 
@@ -58,7 +86,7 @@ public final class ExtThorPlugin extends PluginAdapter {
 
     @Override
     public boolean clientGenerated(Interface compilationUnit, IntrospectedTable introspectedTable) {
-        compilationUnit = compilationUnit.accept(new CompilationUnitVisitor<>() {
+        compilationUnit.accept(new CompilationUnitVisitor<>() {
             @Override
             public Interface visit(TopLevelClass topLevelClass) {
                 return null;
@@ -71,12 +99,12 @@ public final class ExtThorPlugin extends PluginAdapter {
 
             @Override
             public Interface visit(Interface compilationUnit) {
-                Interface copy = new Interface(compilationUnit.getType());
                 String name = context.getJavaClientGeneratorConfiguration().getTargetPackage() + "." + "MapperAdapter";
                 FullyQualifiedJavaType mapper = new FullyQualifiedJavaType(name);
                 mapper.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
-                copy.addSuperInterface(mapper);
-                return copy;
+                compilationUnit.getSuperInterfaceTypes().clear();
+                compilationUnit.addSuperInterface(mapper);
+                return compilationUnit;
             }
         });
         return super.clientGenerated(compilationUnit, introspectedTable);
@@ -84,11 +112,6 @@ public final class ExtThorPlugin extends PluginAdapter {
 
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
-
-
-
-
-
         return super.contextGenerateAdditionalFiles(introspectedTable);
     }
 
