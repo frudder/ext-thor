@@ -99,8 +99,6 @@ public enum DefaultJavaField {
                 compilationUnit.addMethod(method);
             }
         }
-
-
     },
 
     CREATED_BY(new Field("createdBy", new FullyQualifiedJavaType(Serializable.class.getName()))) {
@@ -123,8 +121,6 @@ public enum DefaultJavaField {
                 compilationUnit.addMethod(method);
             }
         }
-
-
     },
 
     LAST_MODIFIED_BY(new Field("lastModifiedBy", new FullyQualifiedJavaType(Serializable.class.getName()))) {
@@ -148,7 +144,6 @@ public enum DefaultJavaField {
             }
         }
     };
-
 
     private final Field field;
 
