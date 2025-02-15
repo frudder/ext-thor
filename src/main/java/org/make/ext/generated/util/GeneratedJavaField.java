@@ -1,6 +1,5 @@
-package org.make.ext;
+package org.make.ext.generated.util;
 
-import com.google.common.collect.Lists;
 import jakarta.annotation.Nullable;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
@@ -15,14 +14,15 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
-/* package */ class GeneratedJavaField implements Consumer<Field>, Iterable<Field> {
+/* package */ class GeneratedJavaField implements Consumer<Field>, Iterable<Field>, GeneratedCompilationUnit {
 
     private static final Logger logger = LoggerFactory.getLogger(GeneratedJavaField.class);
     
     private final TopLevelClass compilationUnit;
 
-    private final List<Field> iterable = Lists.newArrayList();
+    private final List<Field> iterable = newArrayList();
 
     GeneratedJavaField(final TopLevelClass compilationUnit) {
         this.compilationUnit = checkNotNull(compilationUnit);
@@ -47,7 +47,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
         if (Objects.nonNull(field)) {
             iterable.add(field);
         }
-        this.iterable.forEach(this.compilationUnit::addField);
+        this.compilationUnit.getFields().addAll(iterable);
+    }
+
+    @Override
+    public void make() throws Exception {
+        accept(null);
     }
 
     @Override

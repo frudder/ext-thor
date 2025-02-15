@@ -1,4 +1,4 @@
-package org.make.ext;
+package org.make.ext.generated.util;
 
 import com.google.common.collect.Lists;
 import jakarta.annotation.Nullable;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/* package */ class GeneratedJavaMethod implements Consumer<Method>, Iterable<Method> {
+/* package */ class GeneratedJavaMethod implements Consumer<Method>, Iterable<Method> , GeneratedCompilationUnit{
 
     private static final Logger logger = LoggerFactory.getLogger(GeneratedJavaMethod.class);
 
@@ -47,7 +47,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
         if (Objects.nonNull(field)) {
             iterable.add(field);
         }
-        this.iterable.forEach(this.compilationUnit::addMethod);
+        this.compilationUnit.getMethods().addAll(iterable);
+    }
+
+
+    @Override
+    public void make() throws Exception {
+        accept(null);
     }
 
     @Override
@@ -55,4 +61,5 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public Iterator<Method> iterator() {
         return iterable.iterator();
     }
+
 }

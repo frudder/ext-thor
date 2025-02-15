@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public class RouteGenerated extends MakeGenerated {
+public final class RouteGenerated extends MakeGenerated {
 
     private final TopLevelClass compilationUnit;
 

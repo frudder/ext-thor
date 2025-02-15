@@ -1,6 +1,7 @@
 package org.make.ext.generated;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
@@ -13,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public class MapperGenerated extends MakeGenerated {
+public final class MapperGenerated extends MakeGenerated {
 
     private final Interface compilationUnit;
 
@@ -34,16 +35,22 @@ public class MapperGenerated extends MakeGenerated {
         this.context = checkNotNull(context);
         this.compilationUnit = new Interface(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name));
         this.compilationUnit.setVisibility(PUBLIC);
-        this.compilationUnit.addAnnotation("@Generated(value = {\"ext-thor\"})");
+        this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addTypeParameter(new TypeParameter("T"));
 
-        this.compilationUnit.addSuperInterface(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonSelectMapper"));
-        this.compilationUnit.addSuperInterface(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper"));
-        this.compilationUnit.addSuperInterface(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper"));
-        FullyQualifiedJavaType common = new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper");
-        common.addTypeArgument(new FullyQualifiedJavaType("T"));
-        this.compilationUnit.addSuperInterface(common);
-        this.compilationUnit.addSuperInterface(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper"));
+
+        FullyQualifiedJavaType mapper = new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper");
+        mapper.addTypeArgument(new FullyQualifiedJavaType("T"));
+        this.compilationUnit.getSuperInterfaceTypes().addAll(
+                Sets.newHashSet(
+                        new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonSelectMapper"),
+                        new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper"),
+                        new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper"),
+                        mapper,
+                        new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper")
+                )
+        );
+
         this.compilationUnit.addImportedTypes(newHashSet(
                 new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper"),
                 new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper"),
