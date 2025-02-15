@@ -37,8 +37,11 @@ public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormat
 
     private final Formatter formatter;
 
+    private final StreamsFormatter delegate;
+
     public ThorFormatter() {
         formatter = new Formatter(JavaFormatConfig.of(JavaBaseline.V17, IndentationStyle.SPACES));
+        delegate = new StreamsFormatter(formatter);
     }
 
     @Override
@@ -70,8 +73,7 @@ public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormat
     }
 
     String apply(String source) {
-        StreamsFormatter fmt = new StreamsFormatter(formatter);
-        return Try(() -> fmt.format(new StringReader(source))).mapTry(Edit::getFormattedContent)
+        return Try(() -> delegate.format(new StringReader(source))).mapTry(Edit::getFormattedContent)
                 .getOrElseGet(err -> {
                     logger.error(err.getMessage());
                     return source;
