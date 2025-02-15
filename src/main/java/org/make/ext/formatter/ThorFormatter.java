@@ -69,7 +69,6 @@ public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormat
         return apply(source);
     }
 
-
     String apply(String source) {
         StreamsFormatter fmt = new StreamsFormatter(formatter);
         return Try(() -> fmt.format(new StringReader(source))).mapTry(Edit::getFormattedContent)
