@@ -175,7 +175,7 @@
                 <configuration>
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
-                    <contexts>MySQL</contexts>
+                    <contexts>thor</contexts>
                     <configurationFile>${project.basedir}/config.xml</configurationFile>
                 </configuration>
                 <dependencies>
@@ -377,6 +377,7 @@
             <plugin>
                 <groupId>io.spring.javaformat</groupId>
                 <artifactId>spring-javaformat-maven-plugin</artifactId>
+                <version>0.0.43</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -390,6 +391,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
@@ -416,6 +418,21 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>org.make.ext.Main</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

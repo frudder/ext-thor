@@ -5,7 +5,7 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TopLevelEnumeration;
 import org.mybatis.generator.config.Context;
 
-public final class RichInterfaceVisitor extends RichCompilationUnitVisitor<Interface> {
+public abstract class RichInterfaceVisitor extends RichCompilationUnitVisitor<Interface> {
 
     private final Context context;
 

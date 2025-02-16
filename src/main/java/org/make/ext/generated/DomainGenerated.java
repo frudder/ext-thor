@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class DomainGenerated extends MakeFactory {
+public final class DomainGenerated extends ThorJavaFactory {
 
     private final TopLevelClass compilationUnit;
 

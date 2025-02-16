@@ -1,12 +1,13 @@
 package org.make.ext.formatter;
 
-import io.spring.javaformat.config.IndentationStyle;
-import io.spring.javaformat.config.JavaBaseline;
 import io.spring.javaformat.config.JavaFormatConfig;
 import io.spring.javaformat.formatter.Edit;
 import io.spring.javaformat.formatter.Formatter;
 import io.spring.javaformat.formatter.StreamsFormatter;
+import io.spring.javaformat.formatter.eclipse.EclipseCodeFormatter;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.text.edits.TextEdit;
 import org.mybatis.generator.api.JavaFormatter;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.CompilationUnitVisitor;
@@ -21,7 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
+import java.util.Map;
 
+import static io.spring.javaformat.config.IndentationStyle.SPACES;
+import static io.spring.javaformat.config.JavaBaseline.V17;
 import static io.vavr.API.Try;
 
 /**
@@ -29,7 +33,7 @@ import static io.vavr.API.Try;
  * @see CodeFormatter
  * @see org.eclipse.jdt.core.JavaCore
  */
-public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormatter {
+public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormatter, EclipseCodeFormatter {
 
     private final Logger logger = LoggerFactory.getLogger(ThorFormatter.class);
 
@@ -40,7 +44,7 @@ public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormat
     private final StreamsFormatter delegate;
 
     public ThorFormatter() {
-        formatter = new Formatter(JavaFormatConfig.of(JavaBaseline.V17, IndentationStyle.SPACES));
+        formatter = new Formatter(JavaFormatConfig.of(V17, SPACES));
         delegate = new StreamsFormatter(formatter);
     }
 
@@ -70,6 +74,26 @@ public class ThorFormatter implements CompilationUnitVisitor<String>, JavaFormat
     public String visit(Interface compilationUnit) {
         String source = new TopLevelInterfaceRenderer().render(compilationUnit);
         return apply(source);
+    }
+
+    @Override
+    public TextEdit format(int kind, String source, int offset, int length, int indentationLevel, String lineSeparator) {
+        return formatter.format(kind, source, offset, length, indentationLevel, lineSeparator);
+    }
+
+    @Override
+    public TextEdit format(int kind, String source, IRegion[] regions, int indentationLevel, String lineSeparator) {
+        return formatter.format(kind, source, regions, indentationLevel, lineSeparator);
+    }
+
+    @Override
+    public String createIndentationString(int indentationLevel) {
+        return formatter.createIndentationString(indentationLevel);
+    }
+
+    @Override
+    public void setOptions(Map<String, String> options) {
+        formatter.setOptions(options);
     }
 
     String apply(String source) {

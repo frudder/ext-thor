@@ -1,6 +1,5 @@
 package org.make.ext.generated;
 
-import com.google.common.base.Strings;
 import jakarta.annotation.Generated;
 import lombok.Data;
 import org.mybatis.generator.api.GeneratedJavaFile;
@@ -15,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.make.ext.DefaultJavaField.CREATED_AT;
 import static org.make.ext.DefaultJavaField.CREATED_BY;
@@ -24,7 +24,7 @@ import static org.make.ext.DefaultJavaField.SERIAL_VERSION_UID;
 import static org.make.ext.DefaultJavaField.UPDATED_AT;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class EntityGenerated extends MakeFactory {
+public final class EntityGenerated extends ThorJavaFactory {
 
     private final TopLevelClass compilationUnit;
 
@@ -41,7 +41,7 @@ public final class EntityGenerated extends MakeFactory {
     }
 
     private EntityGenerated(final String name, final Context context) {
-        this.name = Strings.isNullOrEmpty(name) ? "AbstractEntity" : name;
+        this.name = isNullOrEmpty(name) ? "AbstractEntity" : name;
         this.context = checkNotNull(context);
         this.compilationUnit = new TopLevelClass(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name));
         this.compilationUnit.setAbstract(true);
