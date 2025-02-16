@@ -1,4 +1,4 @@
-package org.make.ext.plugins;
+package org.make.ext.plugin;
 
 import org.make.ext.generated.EntityGenerated;
 import org.make.ext.generated.MapperGenerated;
@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 /**
  *
  */
-public final class ExtThorPlugin extends PluginAdapter {
+public final class ThorPlugin extends PluginAdapter {
 
     @Override
     public boolean validate(List<String> warnings) {
