@@ -15,7 +15,6 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
 /**
@@ -33,19 +32,19 @@ public final class ExtThorPlugin extends PluginAdapter {
         List<ThorJavaFactory> iterable = newArrayList(
                 EntityGenerated.create(context),
                 MapperGenerated.create(context));
-        return iterable.stream().map(ThorJavaFactory::make).collect(toList());
+        return iterable.stream().map(ThorJavaFactory::make).collect(toUnmodifiableList());
     }
 
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass compilationUnit, IntrospectedTable introspectedTable) {
         compilationUnit.accept(RichJavaModelCompilationUnit.create(context, introspectedTable));
-        return super.modelBaseRecordClassGenerated(compilationUnit, introspectedTable);
+        return true;
     }
 
     @Override
     public boolean clientGenerated(Interface compilationUnit, IntrospectedTable introspectedTable) {
         compilationUnit.accept(RichJavaClientCompilationUnit.create(context, introspectedTable));
-        return super.clientGenerated(compilationUnit, introspectedTable);
+        return true;
     }
 
     @Override
