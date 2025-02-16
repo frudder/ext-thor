@@ -8,7 +8,6 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TypeParameter;
 import org.mybatis.generator.config.Context;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -53,7 +52,6 @@ public final class EntityGenerated extends ThorJavaFactory {
         this.compilationUnit.addImportedTypes(newHashSet(new FullyQualifiedJavaType(Serializable.class.getName()),
                 new FullyQualifiedJavaType(Date.class.getName()),
                 new FullyQualifiedJavaType(Data.class.getName()),
-                new FullyQualifiedJavaType(Serial.class.getName()),
                 new FullyQualifiedJavaType(Generated.class.getName())));
 
         SERIAL_VERSION_UID.apply(compilationUnit);

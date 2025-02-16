@@ -11,7 +11,6 @@ import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -45,7 +44,6 @@ public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor
         compilationUnit.addAnnotation("@EqualsAndHashCode(callSuper = true)");
         compilationUnit.addAnnotation(GENERATED);
         compilationUnit.addImportedTypes(newHashSet(
-                new FullyQualifiedJavaType(Serial.class.getName()),
                 new FullyQualifiedJavaType(Generated.class.getName()),
                 new FullyQualifiedJavaType(Data.class.getName()),
                 new FullyQualifiedJavaType(EqualsAndHashCode.class.getName())
