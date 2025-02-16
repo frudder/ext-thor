@@ -11,6 +11,7 @@ import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.yaml.snakeyaml.Yaml;
 
 import java.util.List;
 
@@ -25,6 +26,10 @@ public final class ThorPlugin extends PluginAdapter {
     @Override
     public boolean validate(List<String> warnings) {
         return true;
+    }
+
+    public ThorPlugin() {
+
     }
 
     @Override
