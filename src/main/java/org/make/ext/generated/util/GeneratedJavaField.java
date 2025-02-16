@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
+@Deprecated
 /* package */ class GeneratedJavaField implements Consumer<Field>, Iterable<Field>, GeneratedCompilationUnit {
 
     private static final Logger logger = LoggerFactory.getLogger(GeneratedJavaField.class);

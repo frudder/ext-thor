@@ -5,7 +5,7 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.config.Context;
 
-public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
+/** package **/ final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
 
     private final IntrospectedTable introspectedTable;
 

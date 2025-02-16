@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Deprecated
 /* package */ class GeneratedJavaMethod implements Consumer<Method>, Iterable<Method> , GeneratedCompilationUnit{
 
     private static final Logger logger = LoggerFactory.getLogger(GeneratedJavaMethod.class);
