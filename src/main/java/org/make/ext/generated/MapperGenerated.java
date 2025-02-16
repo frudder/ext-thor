@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class MapperGenerated extends MakeGenerated {
+public final class MapperGenerated extends MakeFactory {
 
     private final Interface compilationUnit;
 
@@ -61,7 +61,7 @@ public final class MapperGenerated extends MakeGenerated {
     }
 
     @Override
-    public GeneratedJavaFile makeGeneratedFile() {
+    public GeneratedJavaFile make() {
         return new GeneratedJavaFile(this.compilationUnit, context.getJavaClientGeneratorConfiguration().getTargetProject(), StandardCharsets.UTF_8.name(), context.getJavaFormatter());
     }
 

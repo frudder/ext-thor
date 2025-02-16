@@ -24,7 +24,7 @@ import static org.make.ext.DefaultJavaField.SERIAL_VERSION_UID;
 import static org.make.ext.DefaultJavaField.UPDATED_AT;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class EntityGenerated extends MakeGenerated {
+public final class EntityGenerated extends MakeFactory {
 
     private final TopLevelClass compilationUnit;
 
@@ -52,7 +52,6 @@ public final class EntityGenerated extends MakeGenerated {
         this.compilationUnit.addSuperInterface(new FullyQualifiedJavaType(Serializable.class.getName()));
         this.compilationUnit.addImportedTypes(newHashSet(new FullyQualifiedJavaType(Serializable.class.getName()),
                 new FullyQualifiedJavaType(Date.class.getName()),
-                new FullyQualifiedJavaType(Serial.class.getName()),
                 new FullyQualifiedJavaType(Data.class.getName()),
                 new FullyQualifiedJavaType(Serial.class.getName()),
                 new FullyQualifiedJavaType(Generated.class.getName())));
@@ -66,7 +65,7 @@ public final class EntityGenerated extends MakeGenerated {
     }
 
     @Override
-    public GeneratedJavaFile makeGeneratedFile() {
+    public GeneratedJavaFile make() {
         return new GeneratedJavaFile(this.compilationUnit, context.getJavaModelGeneratorConfiguration().getTargetProject(), StandardCharsets.UTF_8.name(), context.getJavaFormatter());
     }
 

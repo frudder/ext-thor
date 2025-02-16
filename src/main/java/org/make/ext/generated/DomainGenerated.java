@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class DomainGenerated extends MakeGenerated {
+public final class DomainGenerated extends MakeFactory {
 
     private final TopLevelClass compilationUnit;
 
@@ -26,7 +26,7 @@ public final class DomainGenerated extends MakeGenerated {
     }
 
     @Override
-    public GeneratedJavaFile makeGeneratedFile() {
+    public GeneratedJavaFile make() {
         return new GeneratedJavaFile(compilationUnit,
                 context.getJavaModelGeneratorConfiguration().getTargetProject(),
                 UTF_8.name(),
