@@ -1,5 +1,6 @@
 package org.make.ext;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -7,11 +8,14 @@ import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.mybatis.generator.api.dom.java.FullyQualifiedJavaType.getDateInstance;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
@@ -34,6 +38,11 @@ public enum DefaultJavaField {
         @Override
         public void apply(TopLevelClass compilationUnit) {
             Field f = apply();
+            Set<String> iterable = newHashSet(f.getAnnotations());
+            String annotation = "@" + Serial.class.getName();
+            if (!iterable.contains(annotation)) {
+                f.addAnnotation(annotation);
+            }
             compilationUnit.addField(f);
         }
     },

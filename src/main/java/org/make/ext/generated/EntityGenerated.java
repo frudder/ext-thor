@@ -3,11 +3,13 @@ package org.make.ext.generated;
 import jakarta.annotation.Generated;
 import lombok.Data;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TypeParameter;
 import org.mybatis.generator.config.Context;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
