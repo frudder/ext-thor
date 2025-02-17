@@ -23,7 +23,7 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
 
     @Override
     public Interface visit(Interface compilationUnit) {
-        String name = getContext().getJavaClientGeneratorConfiguration().getTargetPackage() + "." + "MapperAdapter";
+        String name = getContext().getJavaClientGeneratorConfiguration().getTargetPackage() + "." + this.name;
         FullyQualifiedJavaType mapper = new FullyQualifiedJavaType(name);
         mapper.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         compilationUnit.getSuperInterfaceTypes().clear();

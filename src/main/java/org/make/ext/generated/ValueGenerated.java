@@ -39,7 +39,8 @@ public class ValueGenerated extends ThorJavaFactory {
     }
 
     private ValueGenerated(final Context context, final IntrospectedTable introspectedTable) {
-        this.name = introspectedTable.getMyBatisDynamicSQLTableObjectName();
+        FullyQualifiedJavaType domain = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
+        this.name = domain.getShortName();
         this.context = context;
         this.introspectedTable = introspectedTable;
         FullyQualifiedJavaType token = new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name + "Value");
@@ -52,7 +53,7 @@ public class ValueGenerated extends ThorJavaFactory {
 
         FullyQualifiedJavaType value = new FullyQualifiedJavaType("org.make.ext.generated.ValueObject");
         value.addTypeArgument(new FullyQualifiedJavaType(this.name + "Value"));
-        value.addTypeArgument(new FullyQualifiedJavaType(this.introspectedTable.getMyBatisDynamicSQLTableObjectName()));
+        value.addTypeArgument(domain);
         this.compilationUnit.getSuperInterfaceTypes().addAll(
                 Sets.newLinkedHashSet(newArrayList(
                         value,
@@ -86,9 +87,9 @@ public class ValueGenerated extends ThorJavaFactory {
         Method method = new Method("apply");
         method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
-        method.setReturnType(new FullyQualifiedJavaType(introspectedTable.getMyBatisDynamicSQLTableObjectName()));
+        method.setReturnType(domain);
         method.addParameter(new Parameter(new FullyQualifiedJavaType(this.name + "Value"), "value"));
-        method.addBodyLine("return " + this.introspectedTable.getMyBatisDynamicSQLTableObjectName() + "." + "empty();");
+        method.addBodyLine("return " + domain.getShortName() + "." + "empty();");
         this.compilationUnit.addMethod(method);
     }
 
