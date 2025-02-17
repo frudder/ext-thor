@@ -51,7 +51,6 @@ public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor
         DefaultJavaField.SERIAL_VERSION_UID.apply(compilationUnit);
         compilationUnit.addSuperInterface(new FullyQualifiedJavaType(Serializable.class.getName()));
         compilationUnit.getMethods().clear();
-
         Method method = new Method("empty");
         method.setVisibility(PUBLIC);
         method.setStatic(true);

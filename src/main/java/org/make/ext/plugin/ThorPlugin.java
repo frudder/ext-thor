@@ -1,9 +1,13 @@
 package org.make.ext.plugin;
 
-import org.make.ext.generated.EntityGenerated;
-import org.make.ext.generated.MapperGenerated;
+import org.make.ext.generated.ThorController;
+import org.make.ext.generated.ThorDomain;
+import org.make.ext.generated.ThorInterface;
 import org.make.ext.generated.ThorJavaFactory;
 import org.make.ext.generated.ValueGenerated;
+import org.make.ext.generated.base.EntityGenerated;
+import org.make.ext.generated.base.MapperGenerated;
+import org.make.ext.generated.base.RouteGenerated;
 import org.make.ext.generated.util.RichJavaClientCompilationUnit;
 import org.make.ext.generated.util.RichJavaModelCompilationUnit;
 import org.mybatis.generator.api.GeneratedFile;
@@ -35,6 +39,7 @@ public final class ThorPlugin extends PluginAdapter {
     public List<GeneratedFile> contextGenerateAdditionalFiles() {
         List<ThorJavaFactory> iterable = newArrayList(
                 EntityGenerated.create(context),
+                RouteGenerated.create(context),
                 MapperGenerated.create(context));
         return iterable.stream().map(ThorJavaFactory::make).collect(toUnmodifiableList());
     }
@@ -54,7 +59,10 @@ public final class ThorPlugin extends PluginAdapter {
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
         List<ThorJavaFactory> factories = newArrayList(
-                ValueGenerated.create(context, introspectedTable)
+                ValueGenerated.create(context, introspectedTable),
+                ThorController.create(context, introspectedTable),
+                ThorInterface.create(context, introspectedTable),
+                ThorDomain.create(context, introspectedTable)
         );
         return factories.stream().map(ThorJavaFactory::make).collect(toUnmodifiableList());
     }

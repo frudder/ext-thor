@@ -1,8 +1,9 @@
-package org.make.ext.generated;
+package org.make.ext.generated.base;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.make.ext.generated.ThorJavaFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;

@@ -1,6 +1,7 @@
 package org.make.ext.generated;
 
 import com.google.common.collect.Sets;
+import com.squareup.javapoet.CodeBlock;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import lombok.Data;
@@ -70,6 +71,9 @@ public class ValueGenerated extends ThorJavaFactory {
                                 new FullyQualifiedJavaType(Generated.class.getName()),
                                 new FullyQualifiedJavaType(Schema.class.getName()),
                                 new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()),
+                                new FullyQualifiedJavaType("jakarta.annotation.Nullable"),
+                                new FullyQualifiedJavaType("java.util.Objects"),
+                                new FullyQualifiedJavaType("org.springframework.beans.BeanUtils"),
                                 token
                         )
                 )
@@ -88,8 +92,19 @@ public class ValueGenerated extends ThorJavaFactory {
         method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
         method.setReturnType(domain);
-        method.addParameter(new Parameter(new FullyQualifiedJavaType(this.name + "Value"), "value"));
-        method.addBodyLine("return " + domain.getShortName() + "." + "empty();");
+
+        Parameter parameter = new Parameter(new FullyQualifiedJavaType(this.name + "Value"), "value");
+        parameter.addAnnotation("@Nullable");
+        method.addParameter(parameter);
+        CodeBlock statements = CodeBlock.builder()
+                .beginControlFlow("if (Objects.isNull(value))")
+                .addStatement("value = this")
+                .endControlFlow()
+                .addStatement(this.name + " " + "dest = " + this.name + ".empty()")
+                .addStatement("BeanUtils.copyProperties(value, dest)")
+                .addStatement("return dest")
+                .build();
+        method.addBodyLine(statements.toString());
         this.compilationUnit.addMethod(method);
     }
 

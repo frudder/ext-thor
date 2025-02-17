@@ -1,15 +1,14 @@
-package org.make.ext.generated;
+package org.make.ext.generated.base;
 
 import jakarta.annotation.Generated;
 import lombok.Data;
+import org.make.ext.generated.ThorJavaFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
-import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TypeParameter;
 import org.mybatis.generator.config.Context;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -33,6 +32,8 @@ public final class EntityGenerated extends ThorJavaFactory {
 
     private final Context context;
 
+    private final String packageName;
+
     public static EntityGenerated create(Context context) {
         return create(null, context);
     }
@@ -44,7 +45,8 @@ public final class EntityGenerated extends ThorJavaFactory {
     private EntityGenerated(final String name, final Context context) {
         this.name = isNullOrEmpty(name) ? "AbstractEntity" : name;
         this.context = checkNotNull(context);
-        this.compilationUnit = new TopLevelClass(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name));
+        this.packageName = context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "base";
+        this.compilationUnit = new TopLevelClass(new FullyQualifiedJavaType(packageName + "." + this.name));
         this.compilationUnit.setAbstract(true);
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation("@Data");
