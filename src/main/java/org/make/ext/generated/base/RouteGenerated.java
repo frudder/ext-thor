@@ -2,7 +2,7 @@ package org.make.ext.generated.base;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import org.make.ext.generated.ThorJavaFactory;
+import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
@@ -18,7 +18,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class RouteGenerated extends ThorJavaFactory {
+public final class RouteGenerated extends ThorFactory {
 
     private final Interface compilationUnit;
 

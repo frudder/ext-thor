@@ -25,7 +25,7 @@ import static org.make.ext.DefaultJavaField.SERIAL_VERSION_UID;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public class ValueGenerated extends ThorJavaFactory {
+public class ValueGenerated extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
 

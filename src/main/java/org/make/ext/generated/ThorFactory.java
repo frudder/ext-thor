@@ -11,7 +11,7 @@ import java.time.Instant;
 /**
  * MakeFactory
  */
-public abstract class ThorJavaFactory {
+public abstract class ThorFactory {
 
     public static String GENERATED = "@Generated(value = {\" ext-thor \"} , date = \" " + DateFormatUtils.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:SS") + " \")";
 

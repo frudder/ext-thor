@@ -1,6 +1,6 @@
 package org.make.ext.generated.base;
 
-import org.make.ext.generated.ThorJavaFactory;
+import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class DomainGenerated extends ThorJavaFactory {
+public final class DomainGenerated extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
 

@@ -2,7 +2,7 @@ package org.make.ext.generated.base;
 
 import jakarta.annotation.Generated;
 import lombok.Data;
-import org.make.ext.generated.ThorJavaFactory;
+import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
@@ -24,7 +24,7 @@ import static org.make.ext.DefaultJavaField.SERIAL_VERSION_UID;
 import static org.make.ext.DefaultJavaField.UPDATED_AT;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class EntityGenerated extends ThorJavaFactory {
+public final class EntityGenerated extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
 

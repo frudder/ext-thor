@@ -9,7 +9,7 @@ import org.mybatis.generator.config.Context;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public class ThorDomain extends ThorJavaFactory {
+public class ThorDomain extends ThorFactory {
 
     private final String suffix = "Domain";
 

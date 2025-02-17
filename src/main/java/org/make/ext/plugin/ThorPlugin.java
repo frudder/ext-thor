@@ -3,7 +3,7 @@ package org.make.ext.plugin;
 import org.make.ext.generated.ThorController;
 import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorInterface;
-import org.make.ext.generated.ThorJavaFactory;
+import org.make.ext.generated.ThorFactory;
 import org.make.ext.generated.ValueGenerated;
 import org.make.ext.generated.base.EntityGenerated;
 import org.make.ext.generated.base.MapperGenerated;
@@ -37,11 +37,11 @@ public final class ThorPlugin extends PluginAdapter {
 
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles() {
-        List<ThorJavaFactory> iterable = newArrayList(
+        List<ThorFactory> iterable = newArrayList(
                 EntityGenerated.create(context),
                 RouteGenerated.create(context),
                 MapperGenerated.create(context));
-        return iterable.stream().map(ThorJavaFactory::make).collect(toUnmodifiableList());
+        return iterable.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }
 
     @Override
@@ -58,13 +58,13 @@ public final class ThorPlugin extends PluginAdapter {
 
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
-        List<ThorJavaFactory> factories = newArrayList(
+        List<ThorFactory> factories = newArrayList(
                 ValueGenerated.create(context, introspectedTable),
                 ThorController.create(context, introspectedTable),
                 ThorInterface.create(context, introspectedTable),
                 ThorDomain.create(context, introspectedTable)
         );
-        return factories.stream().map(ThorJavaFactory::make).collect(toUnmodifiableList());
+        return factories.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }
 
 }

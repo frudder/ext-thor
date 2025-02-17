@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static org.make.ext.generated.ThorJavaFactory.GENERATED;
+import static org.make.ext.generated.ThorFactory.GENERATED;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor {

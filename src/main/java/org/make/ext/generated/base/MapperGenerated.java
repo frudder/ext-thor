@@ -3,7 +3,7 @@ package org.make.ext.generated.base;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.make.ext.generated.ThorJavaFactory;
+import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
@@ -19,7 +19,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newLinkedHashSet;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class MapperGenerated extends ThorJavaFactory {
+public final class MapperGenerated extends ThorFactory {
 
     private final Interface compilationUnit;
 

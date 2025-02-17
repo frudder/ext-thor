@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 
-public class ThorController extends ThorJavaFactory {
+public class ThorController extends ThorFactory {
 
     private final String suffix = "Controller";
 
