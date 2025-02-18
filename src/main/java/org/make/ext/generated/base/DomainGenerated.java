@@ -11,9 +11,6 @@ import java.util.Properties;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.nio.charset.StandardCharsets.UTF_8;
-//import static org.make.ext.DefaultProjectSpecs.DEFAULT_DOMAIN_NAME;
-//import static org.make.ext.DefaultProjectSpecs.DEFAULT_SERVICE_NAME;
-//import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_DOMAIN_NAME;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_SERVICE_NAME;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
@@ -44,12 +41,17 @@ public final class DomainGenerated extends ThorFactory {
         FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(THOR_DEFAULT_SERVICE_NAME);
         traitType.addTypeArgument(new FullyQualifiedJavaType("T"));
         traitType.addTypeArgument(new FullyQualifiedJavaType("R"));
+        FullyQualifiedJavaType t = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_DEFAULT_SERVICE_NAME));
+        t.addTypeArgument(new FullyQualifiedJavaType("T"));
+        t.addTypeArgument(new FullyQualifiedJavaType("R"));
         this.compilationUnit = new TopLevelClass(domainType);
+        this.compilationUnit.addSuperInterface(t);
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addImportedTypes(newHashSet(
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
-                new FullyQualifiedJavaType("java.io.Serializable")
+                new FullyQualifiedJavaType("java.io.Serializable"),
+                t
         ));
     }
 
