@@ -4,6 +4,8 @@ import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.Method;
+import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.config.Context;
 
 import java.util.Properties;
@@ -41,8 +43,37 @@ public final class TraitGenerated extends ThorFactory {
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addImportedTypes(newHashSet(
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
-                new FullyQualifiedJavaType("java.io.Serializable")
+                new FullyQualifiedJavaType("java.io.Serializable"),
+                new FullyQualifiedJavaType("java.util.Optional"),
+                new FullyQualifiedJavaType("java.util.List")
         ));
+
+        Method method = new Method("findAll");
+        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("List");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
+        method.setReturnType(returnType);
+        method.setAbstract(true);
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findAll");
+        method.setAbstract(true);
+        method.setReturnType(returnType);
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("Integer"), "offset"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("Integer"), "limit"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findOne");
+        method.setAbstract(true);
+        returnType = new FullyQualifiedJavaType("Optional");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
+        method.setReturnType(returnType);
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("Serializable"), "id"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findOne");
+        method.setAbstract(true);
+        method.setReturnType(returnType);
+        this.compilationUnit.addMethod(method);
     }
 
     @Override
