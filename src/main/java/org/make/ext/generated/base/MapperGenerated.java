@@ -18,6 +18,7 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newLinkedHashSet;
+import static org.make.ext.DefaultProjectSpecs.DEFAULT_MAPPER_NAME;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
@@ -43,7 +44,7 @@ public final class MapperGenerated extends ThorFactory {
 
     private MapperGenerated(final Properties properties, final String name, final Context context) {
         this.properties = properties;
-        this.name = Strings.isNullOrEmpty(name) ? "MapperAdapter" : name;
+        this.name = Strings.isNullOrEmpty(name) ? DEFAULT_MAPPER_NAME.toString() : name;
         this.context = checkNotNull(context);
         FullyQualifiedJavaType base = new FullyQualifiedJavaType(String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", this.name));
         this.compilationUnit = new Interface(base);
