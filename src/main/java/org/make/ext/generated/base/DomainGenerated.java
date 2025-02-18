@@ -34,7 +34,8 @@ public final class DomainGenerated extends ThorFactory {
         String name = TARGET_PACKAGE.getProperty(this.properties);
         name = String.join(".", name, "lang", DEFAULT_DOMAIN_NAME.toString());
         FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(name);
-        domainType.addTypeArgument(new FullyQualifiedJavaType("T extends ThorEntity<? extends Serializable"));
+        // // T extends ThorEntity<? extends Serializable>, R extends MapperAdapter<T>
+        domainType.addTypeArgument(new FullyQualifiedJavaType("T extends ThorEntity <? extends Serializable> "));
         domainType.addTypeArgument(new FullyQualifiedJavaType("R extends MapperAdapter<T>"));
         FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(DEFAULT_SERVICE_NAME.toString());
         traitType.addTypeArgument(new FullyQualifiedJavaType("T"));
