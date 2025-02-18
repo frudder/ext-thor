@@ -1,4 +1,4 @@
-package org.make.ext.generated;
+package org.make.ext.lang;
 
 import java.util.function.Function;
 

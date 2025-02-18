@@ -4,7 +4,7 @@ import org.make.ext.generated.ThorController;
 import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorFactory;
 import org.make.ext.generated.ThorTrait;
-import org.make.ext.generated.ValueGenerated;
+import org.make.ext.generated.ThorValue;
 import org.make.ext.generated.base.DomainGenerated;
 import org.make.ext.generated.base.EntityGenerated;
 import org.make.ext.generated.base.MapperGenerated;
@@ -64,7 +64,7 @@ public final class ThorPlugin extends PluginAdapter {
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
         List<ThorFactory> factories = newArrayList(
-                ValueGenerated.create(properties, context, introspectedTable),
+                ThorValue.create(properties, context, introspectedTable),
                 ThorController.create(properties, context, introspectedTable),
                 ThorTrait.create(properties, context, introspectedTable),
                 ThorDomain.create(properties, context, introspectedTable)

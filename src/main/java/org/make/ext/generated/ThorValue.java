@@ -23,7 +23,7 @@ import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKA
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public class ValueGenerated extends ThorFactory {
+public class ThorValue extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
 
@@ -35,11 +35,11 @@ public class ValueGenerated extends ThorFactory {
 
     private final Properties properties;
 
-    public static ValueGenerated create(Properties properties, Context context, IntrospectedTable introspectedTable) {
-        return new ValueGenerated(properties, context, introspectedTable);
+    public static ThorValue create(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        return new ThorValue(properties, context, introspectedTable);
     }
 
-    private ValueGenerated(final Properties properties, final Context context, final IntrospectedTable introspectedTable) {
+    private ThorValue(final Properties properties, final Context context, final IntrospectedTable introspectedTable) {
         this.properties = properties;
         this.introspectedTable = introspectedTable;
         FullyQualifiedJavaType domain = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
@@ -54,7 +54,7 @@ public class ValueGenerated extends ThorFactory {
         this.compilationUnit.addAnnotation("@EqualsAndHashCode(callSuper = false)");
         this.compilationUnit.addAnnotation("@Schema(name=\"" + this.name + "Value\")");
 
-        FullyQualifiedJavaType value = new FullyQualifiedJavaType("org.make.ext.generated.ValueObject");
+        FullyQualifiedJavaType value = new FullyQualifiedJavaType("org.make.ext.lang.ValueObject");
         value.addTypeArgument(new FullyQualifiedJavaType(this.name + "Value"));
         value.addTypeArgument(domain);
         this.compilationUnit.getSuperInterfaceTypes().addAll(
@@ -67,7 +67,7 @@ public class ValueGenerated extends ThorFactory {
         this.compilationUnit.addImportedTypes(
                 Sets.newLinkedHashSet(newArrayList(
                                 new FullyQualifiedJavaType(Serializable.class.getName()),
-                                new FullyQualifiedJavaType("org.make.ext.generated.ValueObject"),
+                                new FullyQualifiedJavaType("org.make.ext.lang.ValueObject"),
                                 new FullyQualifiedJavaType("lombok.Data"),
                                 new FullyQualifiedJavaType("lombok.EqualsAndHashCode"),
                                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
