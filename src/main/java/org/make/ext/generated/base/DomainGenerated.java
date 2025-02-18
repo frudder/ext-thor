@@ -6,6 +6,8 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
+import java.util.Properties;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
@@ -16,11 +18,14 @@ public final class DomainGenerated extends ThorFactory {
 
     private final Context context;
 
-    public static DomainGenerated create(Context context) {
-        return new DomainGenerated(context);
+    private final Properties properties;
+
+    public static DomainGenerated create(Properties properties, Context context) {
+        return new DomainGenerated(properties, context);
     }
 
-    private DomainGenerated(Context context) {
+    private DomainGenerated(Properties properties, Context context) {
+        this.properties = properties;
         this.context = checkNotNull(context);
         this.compilationUnit = new TopLevelClass(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractDomain"));
         this.compilationUnit.setVisibility(PUBLIC);
@@ -37,5 +42,9 @@ public final class DomainGenerated extends ThorFactory {
     @Override
     public String getName() {
         return "";
+    }
+
+    public Properties getProperties() {
+        return properties;
     }
 }

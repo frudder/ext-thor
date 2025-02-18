@@ -2,8 +2,8 @@ package org.make.ext.plugin;
 
 import org.make.ext.generated.ThorController;
 import org.make.ext.generated.ThorDomain;
-import org.make.ext.generated.ThorInterface;
 import org.make.ext.generated.ThorFactory;
+import org.make.ext.generated.ThorInterface;
 import org.make.ext.generated.ValueGenerated;
 import org.make.ext.generated.base.EntityGenerated;
 import org.make.ext.generated.base.MapperGenerated;
@@ -38,31 +38,31 @@ public final class ThorPlugin extends PluginAdapter {
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles() {
         List<ThorFactory> iterable = newArrayList(
-                EntityGenerated.create(context),
-                RouteGenerated.create(context),
-                MapperGenerated.create(context));
+                EntityGenerated.create(properties, context),
+                RouteGenerated.create(properties, context),
+                MapperGenerated.create(properties, context));
         return iterable.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }
 
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass compilationUnit, IntrospectedTable introspectedTable) {
-        compilationUnit.accept(RichJavaModelCompilationUnit.create(context, introspectedTable));
+        compilationUnit.accept(RichJavaModelCompilationUnit.create(properties, context, introspectedTable));
         return true;
     }
 
     @Override
     public boolean clientGenerated(Interface compilationUnit, IntrospectedTable introspectedTable) {
-        compilationUnit.accept(RichJavaClientCompilationUnit.create(context, introspectedTable));
+        compilationUnit.accept(RichJavaClientCompilationUnit.create(properties, context, introspectedTable));
         return true;
     }
 
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
         List<ThorFactory> factories = newArrayList(
-                ValueGenerated.create(context, introspectedTable),
-                ThorController.create(context, introspectedTable),
-                ThorInterface.create(context, introspectedTable),
-                ThorDomain.create(context, introspectedTable)
+                ValueGenerated.create(properties, context, introspectedTable),
+                ThorController.create(properties, context, introspectedTable),
+                ThorInterface.create(properties, context, introspectedTable),
+                ThorDomain.create(properties, context, introspectedTable)
         );
         return factories.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }

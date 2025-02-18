@@ -11,11 +11,13 @@ import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.config.Context;
 
 import java.util.List;
+import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class RouteGenerated extends ThorFactory {
@@ -26,18 +28,22 @@ public final class RouteGenerated extends ThorFactory {
 
     private final String name;
 
-    public static RouteGenerated create(Context context, String name) {
-        return new RouteGenerated(context, name);
+    private final Properties properties;
+
+
+    public static RouteGenerated create(Properties properties, Context context, String name) {
+        return new RouteGenerated(properties, context, name);
     }
 
-    public static RouteGenerated create(Context context) {
-        return create(context, null);
+    public static RouteGenerated create(Properties properties, Context context) {
+        return create(properties, context, null);
     }
 
-    private RouteGenerated(final Context context, final String name) {
+    private RouteGenerated(Properties properties, final Context context, final String name) {
+        this.properties = checkNotNull(properties);
         this.context = checkNotNull(context);
         this.name = isNullOrEmpty(name) ? "Router" : name;
-        FullyQualifiedJavaType token = new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name);
+        FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".",TARGET_PACKAGE.getProperty(this.properties), "lang", this.name));
         token.addTypeArgument(new FullyQualifiedJavaType("T"));
         this.compilationUnit = new Interface(token);
         this.compilationUnit.setVisibility(PUBLIC);

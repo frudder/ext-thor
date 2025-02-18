@@ -6,12 +6,12 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
+import java.util.Properties;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public class ThorDomain extends ThorFactory {
-
-    private final String suffix = "Domain";
 
     private final TopLevelClass compilationUnit;
 
@@ -21,11 +21,14 @@ public class ThorDomain extends ThorFactory {
 
     private final IntrospectedTable introspectedTable;
 
-    public static ThorDomain create(final Context context, final IntrospectedTable introspectedTable) {
-        return new ThorDomain(context, introspectedTable);
+    private final Properties properties;
+
+    public static ThorDomain create(final Properties properties, final Context context, final IntrospectedTable introspectedTable) {
+        return new ThorDomain(properties, context, introspectedTable);
     }
 
-    public ThorDomain(Context context, IntrospectedTable introspectedTable) {
+    public ThorDomain(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        this.properties = properties;
         this.context = context;
         this.introspectedTable = introspectedTable;
         FullyQualifiedJavaType index = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());

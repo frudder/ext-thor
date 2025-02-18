@@ -2,10 +2,6 @@ package org.make.ext.generated;
 
 import com.google.common.collect.Sets;
 import com.squareup.javapoet.CodeBlock;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -18,6 +14,7 @@ import org.mybatis.generator.config.Context;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -35,16 +32,20 @@ public class ValueGenerated extends ThorFactory {
 
     private final IntrospectedTable introspectedTable;
 
-    public static ValueGenerated create(Context context, IntrospectedTable introspectedTable) {
-        return new ValueGenerated(context, introspectedTable);
+    private final Properties properties;
+
+    public static ValueGenerated create(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        return new ValueGenerated(properties, context, introspectedTable);
     }
 
-    private ValueGenerated(final Context context, final IntrospectedTable introspectedTable) {
+    private ValueGenerated(final Properties properties, final Context context, final IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType domain = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
+        this.properties = properties;
         this.name = domain.getShortName();
         this.context = context;
         this.introspectedTable = introspectedTable;
-        FullyQualifiedJavaType token = new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name + "Value");
+        String name = String.join(".", ThorAttribute.TARGET_PACKAGE.getProperty(this.properties), "views");
+        FullyQualifiedJavaType token = new FullyQualifiedJavaType(name + "." + this.name + "Value");
         this.compilationUnit = new TopLevelClass(token);
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation(GENERATED);
@@ -66,10 +67,10 @@ public class ValueGenerated extends ThorFactory {
                 Sets.newLinkedHashSet(newArrayList(
                                 new FullyQualifiedJavaType(Serializable.class.getName()),
                                 new FullyQualifiedJavaType("org.make.ext.generated.ValueObject"),
-                                new FullyQualifiedJavaType(Data.class.getName()),
-                                new FullyQualifiedJavaType(EqualsAndHashCode.class.getName()),
-                                new FullyQualifiedJavaType(Generated.class.getName()),
-                                new FullyQualifiedJavaType(Schema.class.getName()),
+                                new FullyQualifiedJavaType("lombok.Data"),
+                                new FullyQualifiedJavaType("lombok.EqualsAndHashCode"),
+                                new FullyQualifiedJavaType("jakarta.annotation.Generated"),
+                                new FullyQualifiedJavaType("io.swagger.v3.oas.annotations.media.Schema"),
                                 new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()),
                                 new FullyQualifiedJavaType("jakarta.annotation.Nullable"),
                                 new FullyQualifiedJavaType("java.util.Objects"),

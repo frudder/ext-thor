@@ -12,14 +12,18 @@ import org.mybatis.generator.config.Context;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newLinkedHashSet;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class MapperGenerated extends ThorFactory {
+
+    private static final String TARGET_RUNTIME = "MyBatis3DynamicSql";
 
     private final Interface compilationUnit;
 
@@ -27,24 +31,28 @@ public final class MapperGenerated extends ThorFactory {
 
     private final Context context;
 
-    public static MapperGenerated create(Context context) {
-        return create(null, context);
+    private final Properties properties;
+
+    public static MapperGenerated create(Properties properties, Context context) {
+        return create(properties, null, context);
     }
 
-    public static MapperGenerated create(String name, Context context) {
-        return new MapperGenerated(name, context);
+    public static MapperGenerated create(Properties properties, String name, Context context) {
+        return new MapperGenerated(properties, name, context);
     }
 
-    private MapperGenerated(final String name, final Context context) {
+    private MapperGenerated(final Properties properties, final String name, final Context context) {
+        this.properties = properties;
         this.name = Strings.isNullOrEmpty(name) ? "MapperAdapter" : name;
         this.context = checkNotNull(context);
-        this.compilationUnit = new Interface(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + this.name));
+        FullyQualifiedJavaType base = new FullyQualifiedJavaType(String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", this.name));
+        this.compilationUnit = new Interface(base);
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addTypeParameter(new TypeParameter("T"));
         List<FullyQualifiedJavaType> iterable = Lists.newArrayListWithCapacity(16);
         Set<FullyQualifiedJavaType> imported = newLinkedHashSet();
-        if ("MyBatis3DynamicSql".equalsIgnoreCase(context.getTargetRuntime())) {
+        if (TARGET_RUNTIME.equalsIgnoreCase(context.getTargetRuntime())) {
             FullyQualifiedJavaType mapper = new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper");
             mapper.addTypeArgument(new FullyQualifiedJavaType("T"));
             iterable.add(mapper);
@@ -60,7 +68,7 @@ public final class MapperGenerated extends ThorFactory {
                     new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper"),
                     new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonSelectMapper")));
         }
-        imported.add(new FullyQualifiedJavaType(jakarta.annotation.Generated.class.getName()));
+        imported.add(new FullyQualifiedJavaType("jakarta.annotation.Generated"));
         this.compilationUnit.getSuperInterfaceTypes().addAll(iterable);
         this.compilationUnit.addImportedTypes(imported);
     }

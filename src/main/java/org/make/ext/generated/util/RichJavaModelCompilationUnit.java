@@ -1,8 +1,5 @@
 package org.make.ext.generated.util;
 
-import jakarta.annotation.Generated;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.make.ext.DefaultJavaField;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -13,27 +10,36 @@ import org.mybatis.generator.config.Context;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static org.make.ext.generated.ThorFactory.GENERATED;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor {
 
+    private final Properties properties;
+
     private final IntrospectedTable introspectedTable;
 
-    public RichJavaModelCompilationUnit(Context context, IntrospectedTable introspectedTable) {
+    private final String name;
+
+    public RichJavaModelCompilationUnit(Properties properties, Context context, IntrospectedTable introspectedTable) {
         super(context);
         this.introspectedTable = introspectedTable;
+        this.properties = properties;
+        this.name = "AbstractEntity";
     }
 
-    public static RichJavaModelCompilationUnit create(Context context, IntrospectedTable introspectedTable) {
-        return new RichJavaModelCompilationUnit(context, introspectedTable);
+    public static RichJavaModelCompilationUnit create(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        return new RichJavaModelCompilationUnit(properties, context, introspectedTable);
     }
 
     @Override
     public TopLevelClass visit(TopLevelClass compilationUnit) {
-        FullyQualifiedJavaType base = new FullyQualifiedJavaType(getContext().getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractEntity");
+        String name = String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang" , this.name);
+        FullyQualifiedJavaType base = new FullyQualifiedJavaType(name);
         if (!introspectedTable.hasPrimaryKeyColumns()) {
             throw new IllegalArgumentException();
         }
@@ -44,9 +50,10 @@ public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor
         compilationUnit.addAnnotation("@EqualsAndHashCode(callSuper = true)");
         compilationUnit.addAnnotation(GENERATED);
         compilationUnit.addImportedTypes(newHashSet(
-                new FullyQualifiedJavaType(Generated.class.getName()),
-                new FullyQualifiedJavaType(Data.class.getName()),
-                new FullyQualifiedJavaType(EqualsAndHashCode.class.getName())
+                new FullyQualifiedJavaType("jakarta.annotation.Generated"),
+                new FullyQualifiedJavaType("lombok.Data"),
+                new FullyQualifiedJavaType("lombok.EqualsAndHashCode"),
+                base
         ));
         DefaultJavaField.SERIAL_VERSION_UID.apply(compilationUnit);
         compilationUnit.addSuperInterface(new FullyQualifiedJavaType(Serializable.class.getName()));

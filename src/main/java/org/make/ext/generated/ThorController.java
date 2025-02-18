@@ -11,14 +11,13 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
 import java.io.Serializable;
+import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 
 public class ThorController extends ThorFactory {
-
-    private final String suffix = "Controller";
 
     private final TopLevelClass compilationUnit;
 
@@ -28,21 +27,25 @@ public class ThorController extends ThorFactory {
 
     private final IntrospectedTable introspectedTable;
 
-    public static ThorController create(Context context, IntrospectedTable introspectedTable) {
-        return new ThorController(context, introspectedTable);
+    private final Properties properties;
+
+    public static ThorController create(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        return new ThorController(properties, context, introspectedTable);
     }
 
-    public ThorController(Context context, IntrospectedTable introspectedTable) {
+    public ThorController(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        this.properties = properties;
         this.context = context;
         FullyQualifiedJavaType domain = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         this.introspectedTable = introspectedTable;
-        FullyQualifiedJavaType token = new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + domain.getShortName() + suffix);
+        String name = ThorAttribute.TARGET_PACKAGE.getProperty(this.properties);
+        FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", name, "controllers"));
         this.name = token.getShortName();
-        this.compilationUnit = new TopLevelClass(token);
+        this.compilationUnit = new TopLevelClass(token + "." + domain.getShortName() + "Controller");
         this.compilationUnit.setVisibility(PUBLIC);
         String resources = introspectedTable.getTableConfiguration().getTableName();
-        FullyQualifiedJavaType anyType = new FullyQualifiedJavaType(domain.getShortName() + "Value");
-        FullyQualifiedJavaType router = new FullyQualifiedJavaType("Router");
+        FullyQualifiedJavaType anyType = new FullyQualifiedJavaType(String.join(".", name, "views", domain.getShortName() + "Value"));
+        FullyQualifiedJavaType router = new FullyQualifiedJavaType(String.join(".", name, "lang", "Router"));
         router.addTypeArgument(anyType);
         this.compilationUnit.addSuperInterface(router);
         this.compilationUnit.addAnnotation("@Tags(value = { @Tag(name = \"" + getCamelCaseString(resources, true) + "\")" + "})");
@@ -59,9 +62,10 @@ public class ThorController extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestMapping"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RestController"),
                 new FullyQualifiedJavaType("java.io.Serializable"),
-                new FullyQualifiedJavaType("java.util.List")
+                new FullyQualifiedJavaType("java.util.List"),
+                router,
+                anyType
         ));
-
 
         Method find = new Method("find");
         find.setVisibility(PUBLIC);
