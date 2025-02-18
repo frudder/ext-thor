@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
+import static org.mybatis.generator.api.dom.java.JavaVisibility.DEFAULT;
 
 public class ThorDomain extends ThorFactory {
 
@@ -37,9 +38,9 @@ public class ThorDomain extends ThorFactory {
         FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
         FullyQualifiedJavaType index = new FullyQualifiedJavaType(name + "." + domainType.getShortName() + "Domain");
         this.compilationUnit = new TopLevelClass(index);
-        this.compilationUnit.addJavaDocLine("/** package **/");
-        this.compilationUnit.addFileCommentLine("/** package **/");
         FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(name + "." + "I" + domainType.getShortName());
+        this.compilationUnit.addJavaDocLine("/** package **/");
+        this.compilationUnit.setVisibility(DEFAULT);
         this.compilationUnit.addSuperInterface(traitType);
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addAnnotation("@Service");

@@ -21,6 +21,7 @@ import static org.make.ext.DefaultJavaField.LAST_MODIFIED_BY;
 import static org.make.ext.DefaultJavaField.PRIMARY_KEY;
 import static org.make.ext.DefaultJavaField.SERIAL_VERSION_UID;
 import static org.make.ext.DefaultJavaField.UPDATED_AT;
+import static org.make.ext.DefaultProjectSpecs.DEFAULT_ENTITY_NAME;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
@@ -44,7 +45,7 @@ public final class EntityGenerated extends ThorFactory {
 
     private EntityGenerated(final Properties properties, final String name, final Context context) {
         this.properties = properties;
-        this.name = isNullOrEmpty(name) ? "AbstractEntity" : name;
+        this.name = isNullOrEmpty(name) ? DEFAULT_ENTITY_NAME.toString() : name;
         this.context = checkNotNull(context);
         String specs = String.join(".", TARGET_PACKAGE.getProperty(properties), "lang", this.name);
         this.compilationUnit = new TopLevelClass(new FullyQualifiedJavaType(specs));

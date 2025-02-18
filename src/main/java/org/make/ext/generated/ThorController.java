@@ -38,8 +38,8 @@ public class ThorController extends ThorFactory {
     public ThorController(Properties properties, Context context, IntrospectedTable introspectedTable) {
         this.properties = properties;
         this.context = context;
-        FullyQualifiedJavaType domain = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         this.introspectedTable = introspectedTable;
+        FullyQualifiedJavaType domain = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
         String name = ThorAttribute.TARGET_PACKAGE.getProperty(this.properties);
         FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", name, "controllers"));
         this.name = token.getShortName();
@@ -47,7 +47,7 @@ public class ThorController extends ThorFactory {
         this.compilationUnit.setVisibility(PUBLIC);
         String resources = introspectedTable.getTableConfiguration().getTableName();
         FullyQualifiedJavaType anyType = new FullyQualifiedJavaType(String.join(".", name, "views", domain.getShortName() + "Value"));
-        FullyQualifiedJavaType router = new FullyQualifiedJavaType(String.join(".", name, "lang", "Router"));
+        FullyQualifiedJavaType router = new FullyQualifiedJavaType(String.join(".", name, "lang", "ThorRouter"));
         router.addTypeArgument(anyType);
         this.compilationUnit.addSuperInterface(router);
         this.compilationUnit.addAnnotation("@Tags(value = { @Tag(name = \"" + getCamelCaseString(resources, true) + "\")" + "})");

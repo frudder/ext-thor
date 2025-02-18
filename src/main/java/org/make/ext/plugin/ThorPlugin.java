@@ -5,9 +5,11 @@ import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorFactory;
 import org.make.ext.generated.ThorTrait;
 import org.make.ext.generated.ValueGenerated;
+import org.make.ext.generated.base.DomainGenerated;
 import org.make.ext.generated.base.EntityGenerated;
 import org.make.ext.generated.base.MapperGenerated;
 import org.make.ext.generated.base.RouteGenerated;
+import org.make.ext.generated.base.TraitGenerated;
 import org.make.ext.generated.util.RichJavaClientCompilationUnit;
 import org.make.ext.generated.util.RichJavaModelCompilationUnit;
 import org.mybatis.generator.api.GeneratedFile;
@@ -40,7 +42,10 @@ public final class ThorPlugin extends PluginAdapter {
         List<ThorFactory> iterable = newArrayList(
                 EntityGenerated.create(properties, context),
                 RouteGenerated.create(properties, context),
-                MapperGenerated.create(properties, context));
+                MapperGenerated.create(properties, context),
+                TraitGenerated.create(properties, context),
+                DomainGenerated.create(properties, context)
+        );
         return iterable.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }
 

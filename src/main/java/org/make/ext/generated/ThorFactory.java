@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 public abstract class ThorFactory {
 
-    public static String GENERATED = "@Generated(value = {\" ext-thor \"} , date = \" " + DateFormatUtils.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:SS") + " \")";
+    public static String GENERATED = "@Generated(value = {\"ext-thor\"} , date = \"" + DateFormatUtils.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:SS") + "\")";
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

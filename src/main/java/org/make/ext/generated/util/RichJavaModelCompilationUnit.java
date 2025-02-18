@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static org.make.ext.DefaultProjectSpecs.DEFAULT_ENTITY_NAME;
 import static org.make.ext.generated.ThorFactory.GENERATED;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
@@ -29,7 +30,7 @@ public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor
         super(context);
         this.introspectedTable = introspectedTable;
         this.properties = properties;
-        this.name = "AbstractEntity";
+        this.name = DEFAULT_ENTITY_NAME.toString();
     }
 
     public static RichJavaModelCompilationUnit create(Properties properties, Context context, IntrospectedTable introspectedTable) {
@@ -38,7 +39,7 @@ public final class RichJavaModelCompilationUnit extends RichTopLevelClassVisitor
 
     @Override
     public TopLevelClass visit(TopLevelClass compilationUnit) {
-        String name = String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang" , this.name);
+        String name = String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", this.name);
         FullyQualifiedJavaType base = new FullyQualifiedJavaType(name);
         if (!introspectedTable.hasPrimaryKeyColumns()) {
             throw new IllegalArgumentException();
