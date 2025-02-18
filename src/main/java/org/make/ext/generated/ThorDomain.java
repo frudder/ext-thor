@@ -50,8 +50,10 @@ public class ThorDomain extends ThorFactory {
         DefaultJavaField.LOGGER.apply(this.compilationUnit);
 
         FullyQualifiedJavaType traitDomain = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, THOR_DEFAULT_DOMAIN_NAME));
-        traitDomain.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
-        traitDomain.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType()));
+        FullyQualifiedJavaType T = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
+        FullyQualifiedJavaType R = new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType());
+        traitDomain.addTypeArgument(T);
+        traitDomain.addTypeArgument(R);
         this.compilationUnit.setSuperClass(traitDomain);
         String mapper = context.getJavaClientGeneratorConfiguration().getTargetPackage();
         FullyQualifiedJavaType mapperType = new FullyQualifiedJavaType(mapper + "." + domainType.getShortName() + "Mapper");
@@ -66,7 +68,10 @@ public class ThorDomain extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"),
                 new FullyQualifiedJavaType("org.springframework.stereotype.Service"),
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
-                mapperType
+                mapperType,
+                traitDomain,
+                T,
+                R
         ));
     }
 
