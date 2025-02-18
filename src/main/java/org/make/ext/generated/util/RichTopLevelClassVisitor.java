@@ -1,6 +1,5 @@
 package org.make.ext.generated.util;
 
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TopLevelEnumeration;
@@ -17,9 +16,7 @@ public abstract class RichTopLevelClassVisitor extends RichCompilationUnitVisito
 
     @Override
     public TopLevelClass visit(TopLevelClass compilationUnit) {
-        String name = context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractEntity";
-        compilationUnit.setSuperClass(new FullyQualifiedJavaType(name));
-        return compilationUnit;
+        return null;
     }
 
     @Override
