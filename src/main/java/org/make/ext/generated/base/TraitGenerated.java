@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
-public final class DomainGenerated extends ThorFactory {
+public final class TraitGenerated extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
 
@@ -20,11 +20,11 @@ public final class DomainGenerated extends ThorFactory {
 
     private final Properties properties;
 
-    public static DomainGenerated create(Properties properties, Context context) {
-        return new DomainGenerated(properties, context);
+    public static TraitGenerated create(Properties properties, Context context) {
+        return new TraitGenerated(properties, context);
     }
 
-    private DomainGenerated(Properties properties, Context context) {
+    private TraitGenerated(Properties properties, Context context) {
         this.properties = properties;
         this.context = checkNotNull(context);
         this.compilationUnit = new TopLevelClass(new FullyQualifiedJavaType(context.getJavaModelGeneratorConfiguration().getTargetPackage() + "." + "AbstractDomain"));

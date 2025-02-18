@@ -1,6 +1,5 @@
 package org.make.ext;
 
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -114,6 +113,24 @@ public enum DefaultJavaField {
 
         @Override
         public void apply(TopLevelClass compilationUnit) {
+            compilationUnit.addField(apply());
+        }
+    },
+
+    LOGGER(new Field("logger", new FullyQualifiedJavaType("org.slf4j.Logger"))) {
+        @Override
+        Field apply() {
+            Field value = getValue();
+            value.setVisibility(PRIVATE);
+            value.setFinal(true);
+            value.setStatic(true);
+            return value;
+        }
+
+        @Override
+        public void apply(TopLevelClass compilationUnit) {
+            Field f = getValue();
+            f.setInitializationString("LoggerFactory.getLogger(" + compilationUnit.getType().getShortName() + ".class)");
             compilationUnit.addField(apply());
         }
     };

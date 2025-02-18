@@ -3,7 +3,7 @@ package org.make.ext.plugin;
 import org.make.ext.generated.ThorController;
 import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorFactory;
-import org.make.ext.generated.ThorInterface;
+import org.make.ext.generated.ThorTrait;
 import org.make.ext.generated.ValueGenerated;
 import org.make.ext.generated.base.EntityGenerated;
 import org.make.ext.generated.base.MapperGenerated;
@@ -61,7 +61,7 @@ public final class ThorPlugin extends PluginAdapter {
         List<ThorFactory> factories = newArrayList(
                 ValueGenerated.create(properties, context, introspectedTable),
                 ThorController.create(properties, context, introspectedTable),
-                ThorInterface.create(properties, context, introspectedTable),
+                ThorTrait.create(properties, context, introspectedTable),
                 ThorDomain.create(properties, context, introspectedTable)
         );
         return factories.stream().map(ThorFactory::make).collect(toUnmodifiableList());

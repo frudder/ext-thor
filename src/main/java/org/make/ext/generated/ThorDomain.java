@@ -1,21 +1,23 @@
 package org.make.ext.generated;
 
+import com.google.common.collect.Sets;
+import org.make.ext.DefaultJavaField;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
 
 public class ThorDomain extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
-
-    private final String name;
 
     private final Context context;
 
@@ -31,10 +33,34 @@ public class ThorDomain extends ThorFactory {
         this.properties = properties;
         this.context = context;
         this.introspectedTable = introspectedTable;
-        FullyQualifiedJavaType index = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
-        this.name = index.getShortName() + "Domain";
-        this.compilationUnit = new TopLevelClass(index.getPackageName() + "." + this.name);
-        this.compilationUnit.setVisibility(PUBLIC);
+        String name = String.join(".", TARGET_PACKAGE.getProperty(this.properties), "services");
+        FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
+        FullyQualifiedJavaType index = new FullyQualifiedJavaType(name + "." + domainType.getShortName() + "Domain");
+        this.compilationUnit = new TopLevelClass(index);
+        this.compilationUnit.addJavaDocLine("/** package **/");
+        this.compilationUnit.addFileCommentLine("/** package **/");
+        FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(name + "." + "I" + domainType.getShortName());
+        this.compilationUnit.addSuperInterface(traitType);
+        this.compilationUnit.addAnnotation(GENERATED);
+        this.compilationUnit.addAnnotation("@Service");
+        this.compilationUnit.addAnnotation("@RequiredArgsConstructor(onConstructor = @__(@Autowired))");
+        DefaultJavaField.LOGGER.apply(this.compilationUnit);
+
+        String mapper = context.getJavaClientGeneratorConfiguration().getTargetPackage();
+        FullyQualifiedJavaType mapperType = new FullyQualifiedJavaType(mapper + "." + domainType.getShortName() + "Mapper");
+        Field f = new Field("mapper", mapperType);
+        f.setFinal(true);
+        f.setVisibility(JavaVisibility.PRIVATE);
+        this.compilationUnit.addField(f);
+        this.compilationUnit.addImportedTypes(Sets.newHashSet(
+                new FullyQualifiedJavaType("lombok.RequiredArgsConstructor"),
+                new FullyQualifiedJavaType("org.slf4j.Logger"),
+                new FullyQualifiedJavaType("org.slf4j.LoggerFactory"),
+                new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"),
+                new FullyQualifiedJavaType("org.springframework.stereotype.Service"),
+                new FullyQualifiedJavaType("jakarta.annotation.Generated"),
+                mapperType
+        ));
     }
 
     @Override
@@ -47,6 +73,6 @@ public class ThorDomain extends ThorFactory {
 
     @Override
     public String getName() {
-        return this.name;
+        return "";
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 
@@ -53,6 +55,12 @@ public class ThorController extends ThorFactory {
         this.compilationUnit.addAnnotation("@RestController");
         this.compilationUnit.addAnnotation("@RequestMapping(value = \"/" + resources.replace("_", "/") + "\")");
         this.compilationUnit.addAnnotation("@RequiredArgsConstructor(onConstructor = @__(@Autowired))");
+
+        FullyQualifiedJavaType services = new FullyQualifiedJavaType(name + "." + "services" + "." + "I" + domain.getShortName());
+        Field f = new Field("domain", services);
+        f.setVisibility(PRIVATE);
+        f.setFinal(true);
+        this.compilationUnit.addField(f);
         this.compilationUnit.addImportedTypes(Sets.newHashSet(
                 new FullyQualifiedJavaType("io.swagger.v3.oas.annotations.tags.Tag"),
                 new FullyQualifiedJavaType("io.swagger.v3.oas.annotations.tags.Tags"),
@@ -64,7 +72,8 @@ public class ThorController extends ThorFactory {
                 new FullyQualifiedJavaType("java.io.Serializable"),
                 new FullyQualifiedJavaType("java.util.List"),
                 router,
-                anyType
+                anyType,
+                services
         ));
 
         Method find = new Method("find");
