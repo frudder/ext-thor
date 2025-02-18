@@ -18,7 +18,7 @@ import java.util.Properties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.make.ext.DefaultJavaField.SERIAL_VERSION_UID;
+import static org.make.ext.generated.DefaultJavaField.SERIAL_VERSION_UID;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;

@@ -1,6 +1,6 @@
 package org.make.ext.generated.util;
 
-import org.make.ext.DefaultJavaField;
+import org.make.ext.generated.DefaultJavaField;
 import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

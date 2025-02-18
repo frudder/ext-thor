@@ -1,7 +1,6 @@
 package org.make.ext.generated;
 
 import com.google.common.collect.Sets;
-import org.make.ext.DefaultJavaField;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;

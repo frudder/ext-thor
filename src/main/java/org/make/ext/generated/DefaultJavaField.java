@@ -1,4 +1,4 @@
-package org.make.ext;
+package org.make.ext.generated;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.mybatis.generator.api.dom.java.Field;

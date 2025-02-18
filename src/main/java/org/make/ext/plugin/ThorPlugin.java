@@ -23,9 +23,6 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
-/**
- *
- */
 public final class ThorPlugin extends PluginAdapter {
 
     @Override
