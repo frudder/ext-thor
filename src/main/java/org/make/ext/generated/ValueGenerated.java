@@ -39,11 +39,11 @@ public class ValueGenerated extends ThorFactory {
     }
 
     private ValueGenerated(final Properties properties, final Context context, final IntrospectedTable introspectedTable) {
-        FullyQualifiedJavaType domain = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         this.properties = properties;
+        this.introspectedTable = introspectedTable;
+        FullyQualifiedJavaType domain = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
         this.name = domain.getShortName();
         this.context = context;
-        this.introspectedTable = introspectedTable;
         String name = String.join(".", ThorAttribute.TARGET_PACKAGE.getProperty(this.properties), "views");
         FullyQualifiedJavaType token = new FullyQualifiedJavaType(name + "." + this.name + "Value");
         this.compilationUnit = new TopLevelClass(token);
@@ -51,7 +51,7 @@ public class ValueGenerated extends ThorFactory {
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addAnnotation("@Data");
         this.compilationUnit.addAnnotation("@EqualsAndHashCode(callSuper = false)");
-        this.compilationUnit.addAnnotation("@Schema()");
+        this.compilationUnit.addAnnotation("@Schema(name=\"" + this.name + "Value\")");
 
         FullyQualifiedJavaType value = new FullyQualifiedJavaType("org.make.ext.generated.ValueObject");
         value.addTypeArgument(new FullyQualifiedJavaType(this.name + "Value"));
@@ -74,8 +74,7 @@ public class ValueGenerated extends ThorFactory {
                                 new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()),
                                 new FullyQualifiedJavaType("jakarta.annotation.Nullable"),
                                 new FullyQualifiedJavaType("java.util.Objects"),
-                                new FullyQualifiedJavaType("org.springframework.beans.BeanUtils"),
-                                token
+                                new FullyQualifiedJavaType("org.springframework.beans.BeanUtils")
                         )
                 )
         );
@@ -83,6 +82,7 @@ public class ValueGenerated extends ThorFactory {
         List<Field> property = columns.stream().map(it -> {
             Field f = new Field(it.getJavaProperty(), it.getFullyQualifiedJavaType());
             f.setVisibility(PRIVATE);
+            f.addAnnotation("@Schema(name = \"" + it.getJavaProperty() + "\", description = \"" + it.getRemarks() + "\", defaultValue = \"" + it.getDefaultValue() + "\")");
             return f;
         }).toList();
 

@@ -2,6 +2,7 @@ package org.make.ext.generated;
 
 import com.google.common.collect.Sets;
 import org.make.ext.DefaultJavaField;
+import org.make.ext.DefaultProjectSpecs;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
@@ -42,11 +43,15 @@ public class ThorDomain extends ThorFactory {
         this.compilationUnit.addJavaDocLine("/** package **/");
         this.compilationUnit.setVisibility(DEFAULT);
         this.compilationUnit.addSuperInterface(traitType);
-        this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addAnnotation("@Service");
         this.compilationUnit.addAnnotation("@RequiredArgsConstructor(onConstructor = @__(@Autowired))");
+        this.compilationUnit.addAnnotation(GENERATED);
         DefaultJavaField.LOGGER.apply(this.compilationUnit);
 
+        FullyQualifiedJavaType traitDomain = new FullyQualifiedJavaType(String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", DefaultProjectSpecs.DEFAULT_DOMAIN_NAME.toString()));
+        traitDomain.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+        traitDomain.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType()));
+        this.compilationUnit.setSuperClass(traitDomain);
         String mapper = context.getJavaClientGeneratorConfiguration().getTargetPackage();
         FullyQualifiedJavaType mapperType = new FullyQualifiedJavaType(mapper + "." + domainType.getShortName() + "Mapper");
         Field f = new Field("mapper", mapperType);
