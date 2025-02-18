@@ -18,8 +18,9 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newLinkedHashSet;
-import static org.make.ext.DefaultProjectSpecs.DEFAULT_MAPPER_NAME;
-import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_MAPPER_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class MapperGenerated extends ThorFactory {
@@ -44,9 +45,9 @@ public final class MapperGenerated extends ThorFactory {
 
     private MapperGenerated(final Properties properties, final String name, final Context context) {
         this.properties = properties;
-        this.name = Strings.isNullOrEmpty(name) ? DEFAULT_MAPPER_NAME.toString() : name;
+        this.name = Strings.isNullOrEmpty(name) ? THOR_DEFAULT_MAPPER_NAME : name;
         this.context = checkNotNull(context);
-        FullyQualifiedJavaType base = new FullyQualifiedJavaType(String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", this.name));
+        FullyQualifiedJavaType base = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, this.name));
         this.compilationUnit = new Interface(base);
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation(GENERATED);

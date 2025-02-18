@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
@@ -40,7 +41,7 @@ public class ThorController extends ThorFactory {
         this.context = context;
         this.introspectedTable = introspectedTable;
         FullyQualifiedJavaType domain = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
-        String name = ThorAttribute.TARGET_PACKAGE.getProperty(this.properties);
+        String name = ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE);
         FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", name, "controllers"));
         this.name = token.getShortName();
         this.compilationUnit = new TopLevelClass(token + "." + domain.getShortName() + "Controller");

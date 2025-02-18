@@ -9,12 +9,14 @@ import java.sql.Date;
 import java.time.Instant;
 import java.util.Properties;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * ThorFactory
  */
 public abstract class ThorFactory {
 
-    public static String GENERATED = "@Generated(value = {\"ext-thor\"} , date = \""+ DateFormatUtils.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:SS") +"\")";
+    public static String GENERATED = "@Generated(value = {\"ext-thor\"} , date = \"" + DateFormatUtils.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:SS") + "\")";
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -22,27 +24,30 @@ public abstract class ThorFactory {
 
     public abstract String getName();
 
-    public enum ThorAttribute {
+    public final static class ThorAttribute {
 
-        TARGET_PACKAGE("targetPackage") {
-            @Override
-            public String getProperty(Properties props) {
-                return props.getProperty(toString());
-            }
-        },
-        ;
-        private final String attribute;
-
-        ThorAttribute(String attribute) {
-            this.attribute = attribute;
+        private ThorAttribute() {
         }
 
-        @Override
-        public String toString() {
-            return attribute;
-        }
+        public static final String THOR_LANG = "lang";
 
-        public abstract String getProperty(Properties props);
+        public static final String THOR_TARGET_PACKAGE = "targetPackage";
+
+        public static final String THOR_DEFAULT_CONTROLLER_NAME = "ThorRouter";
+
+        public static final String THOR_DEFAULT_ENTITY_NAME = "ThorEntity";
+
+        public static final String THOR_DEFAULT_SERVICE_NAME = "ThorTrait";
+
+        public static final String THOR_DEFAULT_DOMAIN_NAME = "ThorDomain";
+
+        public static final String THOR_DEFAULT_MAPPER_NAME = "MapperAdapter";
+
+        public static final String THOR_DEFAULT_ENTITY_SUFFIX = "Entity";
+
+        public static String getProperty(Properties properties, String name) {
+            return checkNotNull(properties).getProperty(name);
+        }
     }
 
 }

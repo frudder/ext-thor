@@ -2,7 +2,6 @@ package org.make.ext.generated;
 
 import com.google.common.collect.Sets;
 import org.make.ext.DefaultJavaField;
-import org.make.ext.DefaultProjectSpecs;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
@@ -14,7 +13,9 @@ import org.mybatis.generator.config.Context;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_DOMAIN_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.DEFAULT;
 
 public class ThorDomain extends ThorFactory {
@@ -35,7 +36,7 @@ public class ThorDomain extends ThorFactory {
         this.properties = properties;
         this.context = context;
         this.introspectedTable = introspectedTable;
-        String name = String.join(".", TARGET_PACKAGE.getProperty(this.properties), "services");
+        String name = String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), "services");
         FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
         FullyQualifiedJavaType index = new FullyQualifiedJavaType(name + "." + domainType.getShortName() + "Domain");
         this.compilationUnit = new TopLevelClass(index);
@@ -48,7 +49,7 @@ public class ThorDomain extends ThorFactory {
         this.compilationUnit.addAnnotation(GENERATED);
         DefaultJavaField.LOGGER.apply(this.compilationUnit);
 
-        FullyQualifiedJavaType traitDomain = new FullyQualifiedJavaType(String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", DefaultProjectSpecs.DEFAULT_DOMAIN_NAME.toString()));
+        FullyQualifiedJavaType traitDomain = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, THOR_DEFAULT_DOMAIN_NAME));
         traitDomain.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         traitDomain.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType()));
         this.compilationUnit.setSuperClass(traitDomain);

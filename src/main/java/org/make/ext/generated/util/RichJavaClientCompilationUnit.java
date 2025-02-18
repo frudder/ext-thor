@@ -1,6 +1,7 @@
 package org.make.ext.generated.util;
 
 import com.google.common.collect.Sets;
+import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
@@ -9,8 +10,10 @@ import org.mybatis.generator.config.Context;
 import java.util.Properties;
 import java.util.Set;
 
-import static org.make.ext.DefaultProjectSpecs.DEFAULT_MAPPER_NAME;
-import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_MAPPER_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
+
 
 public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
 
@@ -24,7 +27,7 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
         super(context);
         this.introspectedTable = introspectedTable;
         this.properties = properties;
-        this.name = DEFAULT_MAPPER_NAME.toString();
+        this.name = THOR_DEFAULT_MAPPER_NAME;
     }
 
     public static RichJavaClientCompilationUnit create(Properties properties, Context context, IntrospectedTable introspectedTable) {
@@ -33,7 +36,7 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
 
     @Override
     public Interface visit(Interface compilationUnit) {
-        String name = String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", this.name);
+        String name = String.join(".", ThorFactory.ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, this.name);
         FullyQualifiedJavaType mapper = new FullyQualifiedJavaType(name);
         mapper.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         compilationUnit.getSuperInterfaceTypes().clear();

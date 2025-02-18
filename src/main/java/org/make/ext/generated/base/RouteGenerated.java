@@ -17,8 +17,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.make.ext.DefaultProjectSpecs.DEFAULT_CONTROLLER_NAME;
-import static org.make.ext.generated.ThorFactory.ThorAttribute.TARGET_PACKAGE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_CONTROLLER_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class RouteGenerated extends ThorFactory {
@@ -43,8 +44,8 @@ public final class RouteGenerated extends ThorFactory {
     private RouteGenerated(Properties properties, final Context context, final String name) {
         this.properties = checkNotNull(properties);
         this.context = checkNotNull(context);
-        this.name = isNullOrEmpty(name) ? DEFAULT_CONTROLLER_NAME.toString() : name;
-        FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", TARGET_PACKAGE.getProperty(this.properties), "lang", this.name));
+        this.name = isNullOrEmpty(name) ? THOR_DEFAULT_CONTROLLER_NAME : name;
+        FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, this.name));
         token.addTypeArgument(new FullyQualifiedJavaType("T"));
         this.compilationUnit = new Interface(token);
         this.compilationUnit.setVisibility(PUBLIC);
