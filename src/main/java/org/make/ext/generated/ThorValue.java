@@ -19,6 +19,7 @@ import java.util.Properties;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.make.ext.generated.DefaultJavaField.SERIAL_VERSION_UID;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_POJO_SUFFIX;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
@@ -95,18 +96,27 @@ public class ThorValue extends ThorFactory {
         method.addAnnotation("@Override");
         method.setReturnType(domain);
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType(this.name + "Value"), "value");
+        Parameter parameter = new Parameter(new FullyQualifiedJavaType(this.name + THOR_DEFAULT_POJO_SUFFIX), "value");
         parameter.addAnnotation("@Nullable");
         method.addParameter(parameter);
         CodeBlock statements = CodeBlock.builder()
                 .beginControlFlow("if (Objects.isNull(value))")
                 .addStatement("value = this")
                 .endControlFlow()
-                .addStatement(this.name + " " + "dest = " + this.name + ".empty()")
-                .addStatement("BeanUtils.copyProperties(value, dest)")
-                .addStatement("return dest")
+                .addStatement(this.name + " " + "object = " + this.name + ".empty()")
+                .addStatement("BeanUtils.copyProperties(value, object)")
+                .addStatement("return object")
                 .build();
         method.addBodyLine(statements.toString());
+
+        Method empty = new Method("empty");
+        empty.setVisibility(PUBLIC);
+        empty.setStatic(true);
+        empty.setReturnType(token);
+        empty.addBodyLine(CodeBlock.builder()
+                .addStatement("return " + "new " + token.getShortName() + "()")
+                .build().toString());
+        this.compilationUnit.addMethod(empty);
         this.compilationUnit.addMethod(method);
     }
 
