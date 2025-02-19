@@ -31,6 +31,14 @@ public abstract class ThorFactory {
 
         public static final String THOR_LANG = "lang";
 
+        public static final String THOR_VIEWS = "views";
+
+        public static final String THOR_SERVICE = "services";
+
+        public static final String THOR_SERVICE_PREFIX = "I";
+
+        public static final String THOR_CONTROLLER = "controller";
+
         public static final String THOR_TARGET_PACKAGE = "targetPackage";
 
         public static final String THOR_DEFAULT_CONTROLLER_NAME = "ThorRouter";
@@ -44,6 +52,10 @@ public abstract class ThorFactory {
         public static final String THOR_DEFAULT_MAPPER_NAME = "MapperAdapter";
 
         public static final String THOR_DEFAULT_ENTITY_SUFFIX = "Entity";
+
+        public static final String THOR_DEFAULT_POJO_SUFFIX = "Value";
+
+        public static final String THOR_DEFAULT_CONTROLLER_SUFFIX = "Controller";
 
         public static String getProperty(Properties properties, String name) {
             return checkNotNull(properties).getProperty(name);

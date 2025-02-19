@@ -1,6 +1,6 @@
 package org.make.ext.plugin;
 
-import org.make.ext.generated.ThorController;
+import org.make.ext.generated.ThorHandler;
 import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorFactory;
 import org.make.ext.generated.ThorTrait;
@@ -62,7 +62,7 @@ public final class ThorPlugin extends PluginAdapter {
     public List<GeneratedFile> contextGenerateAdditionalFiles(IntrospectedTable introspectedTable) {
         List<ThorFactory> factories = newArrayList(
                 ThorValue.create(properties, context, introspectedTable),
-                ThorController.create(properties, context, introspectedTable),
+                ThorHandler.create(properties, context, introspectedTable),
                 ThorTrait.create(properties, context, introspectedTable),
                 ThorDomain.create(properties, context, introspectedTable)
         );
