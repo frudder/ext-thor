@@ -49,6 +49,11 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
                 new FullyQualifiedJavaType("org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper")
         );
         compilationUnit.getImportedTypes().removeIf(remove::contains);
+        compilationUnit.getMethods().forEach(it -> {
+            if (it.isDefault()) {
+                it.addAnnotation("@Override");
+            }
+        });
         return compilationUnit;
     }
 }

@@ -3,9 +3,7 @@ package org.make.ext.generated;
 import com.google.common.collect.Sets;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
@@ -54,12 +52,6 @@ public class ThorDomain extends ThorFactory {
         traitDomain.addTypeArgument(T);
         traitDomain.addTypeArgument(R);
         this.compilationUnit.setSuperClass(traitDomain);
-        String mapper = context.getJavaClientGeneratorConfiguration().getTargetPackage();
-        FullyQualifiedJavaType mapperType = new FullyQualifiedJavaType(mapper + "." + domainType.getShortName() + "Mapper");
-        Field f = new Field("mapper", mapperType);
-        f.setFinal(true);
-        f.setVisibility(JavaVisibility.PRIVATE);
-        this.compilationUnit.addField(f);
         this.compilationUnit.addImportedTypes(Sets.newHashSet(
                 new FullyQualifiedJavaType("lombok.RequiredArgsConstructor"),
                 new FullyQualifiedJavaType("org.slf4j.Logger"),
@@ -67,7 +59,6 @@ public class ThorDomain extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"),
                 new FullyQualifiedJavaType("org.springframework.stereotype.Service"),
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
-                mapperType,
                 traitDomain,
                 T,
                 R

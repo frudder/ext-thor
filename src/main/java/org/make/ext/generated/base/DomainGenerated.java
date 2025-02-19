@@ -19,6 +19,7 @@ import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_SERV
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
+import static org.mybatis.generator.api.dom.java.JavaVisibility.PROTECTED;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
 public final class DomainGenerated extends ThorFactory {
@@ -62,7 +63,7 @@ public final class DomainGenerated extends ThorFactory {
         ));
 
         Field f = new Field("mapper", new FullyQualifiedJavaType("R"));
-        f.setVisibility(PRIVATE);
+        f.setVisibility(PROTECTED);
         f.addAnnotation("@Resource");
         this.compilationUnit.addField(f);
 
