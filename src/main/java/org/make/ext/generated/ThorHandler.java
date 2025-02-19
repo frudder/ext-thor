@@ -15,12 +15,20 @@ import java.io.Serializable;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_CONTROLLER;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_CONTROLLER_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_CONTROLLER_SUFFIX;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_POJO_SUFFIX;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_SERVICE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_SERVICE_PREFIX;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_VIEWS;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 
-public class ThorController extends ThorFactory {
+public class ThorHandler extends ThorFactory {
 
     private final TopLevelClass compilationUnit;
 
@@ -32,32 +40,31 @@ public class ThorController extends ThorFactory {
 
     private final Properties properties;
 
-    public static ThorController create(Properties properties, Context context, IntrospectedTable introspectedTable) {
-        return new ThorController(properties, context, introspectedTable);
+    public static ThorHandler create(Properties properties, Context context, IntrospectedTable introspectedTable) {
+        return new ThorHandler(properties, context, introspectedTable);
     }
 
-    public ThorController(Properties properties, Context context, IntrospectedTable introspectedTable) {
+    public ThorHandler(Properties properties, Context context, IntrospectedTable introspectedTable) {
         this.properties = properties;
         this.context = context;
         this.introspectedTable = introspectedTable;
         FullyQualifiedJavaType domain = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
         String name = ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE);
-        FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", name, "controllers"));
+        FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", name, THOR_CONTROLLER));
         this.name = token.getShortName();
-        this.compilationUnit = new TopLevelClass(token + "." + domain.getShortName() + "Controller");
+        this.compilationUnit = new TopLevelClass(token + "." + domain.getShortName() + THOR_DEFAULT_CONTROLLER_SUFFIX);
         this.compilationUnit.setVisibility(PUBLIC);
         String resources = introspectedTable.getTableConfiguration().getTableName();
-        FullyQualifiedJavaType anyType = new FullyQualifiedJavaType(String.join(".", name, "views", domain.getShortName() + "Value"));
-        FullyQualifiedJavaType router = new FullyQualifiedJavaType(String.join(".", name, "lang", "ThorRouter"));
+        FullyQualifiedJavaType anyType = new FullyQualifiedJavaType(String.join(".", name, THOR_VIEWS, domain.getShortName() + THOR_DEFAULT_POJO_SUFFIX));
+        FullyQualifiedJavaType router = new FullyQualifiedJavaType(String.join(".", name, THOR_LANG, THOR_DEFAULT_CONTROLLER_NAME));
         router.addTypeArgument(anyType);
         this.compilationUnit.addSuperInterface(router);
         this.compilationUnit.addAnnotation("@Tags(value = { @Tag(name = \"" + getCamelCaseString(resources, true) + "\")" + "})");
-        this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addAnnotation("@RestController");
         this.compilationUnit.addAnnotation("@RequestMapping(value = \"/" + resources.replace("_", "/") + "\")");
         this.compilationUnit.addAnnotation("@RequiredArgsConstructor(onConstructor = @__(@Autowired))");
-
-        FullyQualifiedJavaType services = new FullyQualifiedJavaType(name + "." + "services" + "." + "I" + domain.getShortName());
+        this.compilationUnit.addAnnotation(GENERATED);
+        FullyQualifiedJavaType services = new FullyQualifiedJavaType(name + "." + THOR_SERVICE+ "." + THOR_SERVICE_PREFIX + domain.getShortName());
         Field f = new Field("domain", services);
         f.setVisibility(PRIVATE);
         f.setFinal(true);
