@@ -51,6 +51,7 @@ public final class DomainGenerated extends ThorFactory {
         this.compilationUnit = new TopLevelClass(domainType);
         this.compilationUnit.addSuperInterface(t);
         this.compilationUnit.setVisibility(PUBLIC);
+        this.compilationUnit.setAbstract(true);
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addImportedTypes(newHashSet(
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
