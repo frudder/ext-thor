@@ -65,7 +65,9 @@ public final class RouteGenerated extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestMapping"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestParam"),
                 new FullyQualifiedJavaType("java.io.Serializable"),
-                new FullyQualifiedJavaType("java.util.List")
+                new FullyQualifiedJavaType("java.util.List"),
+                new FullyQualifiedJavaType("java.util.function.Supplier"),
+                new FullyQualifiedJavaType("java.util.function.BooleanSupplier")
         ));
         this.compilationUnit.addStaticImports(newHashSet(
                 "org.springframework.http.MediaType.APPLICATION_JSON_VALUE",
@@ -75,7 +77,9 @@ public final class RouteGenerated extends ThorFactory {
         Method find = new Method("find");
         find.setAbstract(true);
         find.addAnnotation("@GetMapping(value = \"/{id}\")");
-        find.setReturnType(new FullyQualifiedJavaType("T"));
+        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("Supplier");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("List<T>"));
+        find.setReturnType(returnType);
         FullyQualifiedJavaType item = new FullyQualifiedJavaType("List");
         item.addTypeArgument(new FullyQualifiedJavaType("Serializable"));
         Parameter parameter = new Parameter(item, "item");
@@ -88,8 +92,6 @@ public final class RouteGenerated extends ThorFactory {
         Method seek = new Method("find");
         seek.setAbstract(true);
         seek.addAnnotation("@GetMapping");
-        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("List");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         seek.setReturnType(returnType);
         List<Parameter> parameters = Lists.newArrayListWithCapacity(16);
         parameter = new Parameter(new FullyQualifiedJavaType("Integer"), "index");
@@ -106,7 +108,8 @@ public final class RouteGenerated extends ThorFactory {
 
         Method remove = new Method("remove");
         remove.setAbstract(true);
-        remove.setReturnType(new FullyQualifiedJavaType("boolean"));
+        returnType = new FullyQualifiedJavaType("BooleanSupplier");
+        remove.setReturnType(returnType);
         remove.addAnnotation("@DeleteMapping(value = \"/{id}\")");
         item = new FullyQualifiedJavaType("List");
         item.addTypeArgument(new FullyQualifiedJavaType("Serializable"));
@@ -118,7 +121,8 @@ public final class RouteGenerated extends ThorFactory {
 
         Method create = new Method("create");
         create.setAbstract(true);
-        returnType = new FullyQualifiedJavaType("T");
+        returnType = new FullyQualifiedJavaType("Supplier");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         create.setReturnType(returnType);
         create.addAnnotation("@PutMapping");
         FullyQualifiedJavaType body = new FullyQualifiedJavaType("T");
@@ -130,8 +134,8 @@ public final class RouteGenerated extends ThorFactory {
 
         Method bulk = new Method("create");
         bulk.setAbstract(true);
-        returnType = new FullyQualifiedJavaType("List");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
+        returnType = new FullyQualifiedJavaType("Supplier");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("List<T>"));
         bulk.setReturnType(returnType);
         bulk.addAnnotation("@PutMapping(value = \"/bulk\")");
         body = new FullyQualifiedJavaType("List");
