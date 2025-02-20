@@ -1,4 +1,4 @@
-package org.make.ext.generated.base;
+package org.make.ext.generated.lang;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;

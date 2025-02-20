@@ -1,4 +1,4 @@
-package org.make.ext.generated.base;
+package org.make.ext.generated.lang;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

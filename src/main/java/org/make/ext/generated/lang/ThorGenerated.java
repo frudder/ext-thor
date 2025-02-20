@@ -1,4 +1,4 @@
-package org.make.ext.generated.base;
+package org.make.ext.generated.lang;
 
 import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;

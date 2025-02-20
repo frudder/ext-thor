@@ -1,4 +1,4 @@
-package org.make.ext.generated.base;
+package org.make.ext.generated.lang;
 
 import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
@@ -18,7 +18,6 @@ import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_DOMA
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_SERVICE_NAME;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
-import static org.mybatis.generator.api.dom.java.JavaVisibility.PRIVATE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PROTECTED;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.PUBLIC;
 
