@@ -76,7 +76,8 @@ public final class MapperGenerated extends ThorFactory {
                     new FullyQualifiedJavaType("org.mybatis.dynamic.sql.delete.DeleteDSLCompleter"),
                     new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.CountDSLCompleter"),
                     new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.SelectDSLCompleter"),
-                    new FullyQualifiedJavaType("org.mybatis.dynamic.sql.update.UpdateDSLCompleter")
+                    new FullyQualifiedJavaType("org.mybatis.dynamic.sql.update.UpdateDSLCompleter"),
+                    new FullyQualifiedJavaType("org.mybatis.dynamic.sql.AliasableSqlTable")
             ));
         }
         imported.add(new FullyQualifiedJavaType("jakarta.annotation.Generated"));
@@ -89,7 +90,6 @@ public final class MapperGenerated extends ThorFactory {
         count.setVisibility(JavaVisibility.DEFAULT);
         count.setReturnType(new FullyQualifiedJavaType("long"));
         count.addParameter(new Parameter(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.CountDSLCompleter"), "completer"));
-        count.addBodyLine("return 0L;");
         this.compilationUnit.addMethod(count);
 
         Method delete = new Method("delete");
@@ -98,7 +98,6 @@ public final class MapperGenerated extends ThorFactory {
         delete.setVisibility(JavaVisibility.DEFAULT);
         delete.setReturnType(new FullyQualifiedJavaType("int"));
         delete.addParameter(new Parameter(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.delete.DeleteDSLCompleter"), "completer"));
-        delete.addBodyLine("return 0;");
         this.compilationUnit.addMethod(delete);
 
         Method deleteByPrimaryKey = new Method("deleteByPrimaryKey");
@@ -107,7 +106,6 @@ public final class MapperGenerated extends ThorFactory {
         deleteByPrimaryKey.setVisibility(JavaVisibility.DEFAULT);
         deleteByPrimaryKey.setReturnType(new FullyQualifiedJavaType("int"));
         deleteByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("ID"), "id_"));
-        deleteByPrimaryKey.addBodyLine("return 0;");
         this.compilationUnit.addMethod(deleteByPrimaryKey);
 
         Method insert = new Method("insert");
@@ -116,7 +114,6 @@ public final class MapperGenerated extends ThorFactory {
         insert.setVisibility(JavaVisibility.DEFAULT);
         insert.setReturnType(new FullyQualifiedJavaType("int"));
         insert.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "row"));
-        insert.addBodyLine("return 0;");
         this.compilationUnit.addMethod(insert);
 
         Method insertMultiple = new Method("insertMultiple");
@@ -127,7 +124,6 @@ public final class MapperGenerated extends ThorFactory {
         FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("Collection");
         parameterType.addTypeArgument(new FullyQualifiedJavaType("T"));
         insertMultiple.addParameter(new Parameter(parameterType, "records"));
-        insertMultiple.addBodyLine("return 0;");
         this.compilationUnit.addMethod(insertMultiple);
 
         Method insertSelective = new Method("insertSelective");
@@ -136,7 +132,6 @@ public final class MapperGenerated extends ThorFactory {
         insertSelective.setVisibility(JavaVisibility.DEFAULT);
         insertSelective.setReturnType(new FullyQualifiedJavaType("int"));
         insertSelective.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "row"));
-        insertSelective.addBodyLine("return 0;");
         this.compilationUnit.addMethod(insertSelective);
 
         Method selectOne = new Method("selectOne");
@@ -147,7 +142,6 @@ public final class MapperGenerated extends ThorFactory {
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         selectOne.setReturnType(returnType);
         selectOne.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "completer"));
-        selectOne.addBodyLine("return Optional.empty();");
         this.compilationUnit.addMethod(selectOne);
 
         Method select = new Method("select");
@@ -158,7 +152,6 @@ public final class MapperGenerated extends ThorFactory {
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         select.setReturnType(returnType);
         select.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "completer"));
-        select.addBodyLine("return List.of();");
         this.compilationUnit.addMethod(select);
 
         Method selectDistinct = new Method("selectDistinct");
@@ -169,7 +162,6 @@ public final class MapperGenerated extends ThorFactory {
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         selectDistinct.setReturnType(returnType);
         selectDistinct.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "completer"));
-        selectDistinct.addBodyLine("return List.of();");
         this.compilationUnit.addMethod(selectDistinct);
 
         Method selectByPrimaryKey = new Method("selectByPrimaryKey");
@@ -180,7 +172,6 @@ public final class MapperGenerated extends ThorFactory {
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         selectByPrimaryKey.setReturnType(returnType);
         selectByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("ID"), "id_"));
-        selectByPrimaryKey.addBodyLine("return  Optional.empty();");
         this.compilationUnit.addMethod(selectByPrimaryKey);
 
         Method update = new Method("update");
@@ -190,7 +181,6 @@ public final class MapperGenerated extends ThorFactory {
         returnType = new FullyQualifiedJavaType("int");
         update.setReturnType(returnType);
         update.addParameter(new Parameter(new FullyQualifiedJavaType("UpdateDSLCompleter"), "completer"));
-        update.addBodyLine("return  0;");
         this.compilationUnit.addMethod(update);
 
         Method updateByPrimaryKey = new Method("updateByPrimaryKey");
@@ -200,7 +190,6 @@ public final class MapperGenerated extends ThorFactory {
         returnType = new FullyQualifiedJavaType("int");
         updateByPrimaryKey.setReturnType(returnType);
         updateByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "row"));
-        updateByPrimaryKey.addBodyLine("return  0;");
         this.compilationUnit.addMethod(updateByPrimaryKey);
 
         Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective");
@@ -210,8 +199,16 @@ public final class MapperGenerated extends ThorFactory {
         returnType = new FullyQualifiedJavaType("int");
         updateByPrimaryKeySelective.setReturnType(returnType);
         updateByPrimaryKeySelective.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "row"));
-        updateByPrimaryKeySelective.addBodyLine("return  0;");
         this.compilationUnit.addMethod(updateByPrimaryKeySelective);
+
+        Method from = new Method("from");
+        from.addAnnotation(GENERATED);
+        from.setAbstract(true);
+        from.setVisibility(JavaVisibility.DEFAULT);
+        returnType = new FullyQualifiedJavaType("AliasableSqlTable");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("?"));
+        from.setReturnType(returnType);
+        this.compilationUnit.addMethod(from);
 
         imported.addAll(Sets.newHashSet(
                 new FullyQualifiedJavaType("java.util.Collection"),

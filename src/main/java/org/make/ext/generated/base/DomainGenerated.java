@@ -96,7 +96,7 @@ public final class DomainGenerated extends ThorFactory {
         returnType = new FullyQualifiedJavaType("Optional");
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         method.setReturnType(returnType);
-        method.addParameter(new Parameter(new FullyQualifiedJavaType("Serializable"), "id"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("D"), "id_"));
         method.addBodyLine("return Optional.empty();");
         this.compilationUnit.addMethod(method);
 

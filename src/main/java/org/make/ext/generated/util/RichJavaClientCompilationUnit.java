@@ -5,13 +5,16 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.internal.util.JavaBeansUtil;
 
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static org.make.ext.generated.ThorFactory.GENERATED;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_MAPPER_NAME;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
@@ -60,6 +63,17 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
                 it.addAnnotation("@Override");
             }
         });
+
+        Method from = new Method("from");
+        from.addAnnotation(GENERATED);
+        from.addAnnotation("@Override");
+        from.setDefault(true);
+        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("AliasableSqlTable");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("?"));
+        from.setReturnType(returnType);
+        from.addBodyLine("return " + JavaBeansUtil.getValidPropertyName(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()).getShortName()) + ";");
+        compilationUnit.addMethod(from);
+        compilationUnit.addImportedTypes(Set.of(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.AliasableSqlTable")));
         return compilationUnit;
     }
 }

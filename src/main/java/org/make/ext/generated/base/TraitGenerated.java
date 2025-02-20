@@ -70,7 +70,7 @@ public final class TraitGenerated extends ThorFactory {
         returnType = new FullyQualifiedJavaType("Optional");
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         method.setReturnType(returnType);
-        method.addParameter(new Parameter(new FullyQualifiedJavaType("Serializable"), "id"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("D"), "id_"));
         this.compilationUnit.addMethod(method);
 
         method = new Method("findOne");
