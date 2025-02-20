@@ -55,6 +55,7 @@ public final class MapperGenerated extends ThorFactory {
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addTypeParameter(new TypeParameter("T"));
+        this.compilationUnit.addTypeParameter(new TypeParameter("ID extends Serializable"));
         List<FullyQualifiedJavaType> iterable = newArrayListWithCapacity(16);
         Set<FullyQualifiedJavaType> imported = newLinkedHashSet();
         if (TARGET_RUNTIME.equalsIgnoreCase(context.getTargetRuntime())) {
@@ -79,6 +80,7 @@ public final class MapperGenerated extends ThorFactory {
             ));
         }
         imported.add(new FullyQualifiedJavaType("jakarta.annotation.Generated"));
+        imported.add(new FullyQualifiedJavaType("java.io.Serializable"));
         this.compilationUnit.getSuperInterfaceTypes().addAll(iterable);
 
         Method count = new Method("count");
@@ -104,7 +106,7 @@ public final class MapperGenerated extends ThorFactory {
         deleteByPrimaryKey.setAbstract(true);
         deleteByPrimaryKey.setVisibility(JavaVisibility.DEFAULT);
         deleteByPrimaryKey.setReturnType(new FullyQualifiedJavaType("int"));
-        deleteByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("Long"), "id_"));
+        deleteByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("ID"), "id_"));
         deleteByPrimaryKey.addBodyLine("return 0;");
         this.compilationUnit.addMethod(deleteByPrimaryKey);
 
@@ -177,7 +179,7 @@ public final class MapperGenerated extends ThorFactory {
         returnType = new FullyQualifiedJavaType("Optional");
         returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
         selectByPrimaryKey.setReturnType(returnType);
-        selectByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("Long"), "id_"));
+        selectByPrimaryKey.addParameter(new Parameter(new FullyQualifiedJavaType("ID"), "id_"));
         selectByPrimaryKey.addBodyLine("return  Optional.empty();");
         this.compilationUnit.addMethod(selectByPrimaryKey);
 

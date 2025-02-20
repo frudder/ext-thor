@@ -2,11 +2,13 @@ package org.make.ext.generated;
 
 import com.google.common.collect.Sets;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
+import java.util.List;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -47,9 +49,15 @@ public class ThorDomain extends ThorFactory {
         DefaultJavaField.LOGGER.apply(this.compilationUnit);
 
         FullyQualifiedJavaType traitDomain = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, THOR_DEFAULT_DOMAIN_NAME));
+        if (!introspectedTable.hasPrimaryKeyColumns()) {
+            throw new IllegalArgumentException();
+        }
+        List<IntrospectedColumn> columns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType primaryKey = columns.get(0).getFullyQualifiedJavaType();
         FullyQualifiedJavaType T = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         FullyQualifiedJavaType R = new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType());
         traitDomain.addTypeArgument(T);
+        traitDomain.addTypeArgument(primaryKey);
         traitDomain.addTypeArgument(R);
         this.compilationUnit.setSuperClass(traitDomain);
         this.compilationUnit.addImportedTypes(Sets.newHashSet(
@@ -60,6 +68,7 @@ public class ThorDomain extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.stereotype.Service"),
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
                 traitDomain,
+                primaryKey,
                 T,
                 R
         ));

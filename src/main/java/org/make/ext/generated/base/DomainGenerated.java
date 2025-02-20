@@ -40,15 +40,18 @@ public final class DomainGenerated extends ThorFactory {
         String name = ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE);
         name = String.join(".", name, THOR_LANG, THOR_DEFAULT_DOMAIN_NAME);
         FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(name);
-        // // T extends ThorEntity<? extends Serializable>, R extends MapperAdapter<T>
+        // T extends ThorEntity<? extends Serializable>, D extends Serializable, M extends MapperAdapter<T,D>
         domainType.addTypeArgument(new FullyQualifiedJavaType("T extends ThorEntity <? extends Serializable> "));
-        domainType.addTypeArgument(new FullyQualifiedJavaType("R extends MapperAdapter<T>"));
+        domainType.addTypeArgument(new FullyQualifiedJavaType("D extends Serializable "));
+        domainType.addTypeArgument(new FullyQualifiedJavaType("M extends MapperAdapter<T,D>"));
         FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(THOR_DEFAULT_SERVICE_NAME);
         traitType.addTypeArgument(new FullyQualifiedJavaType("T"));
-        traitType.addTypeArgument(new FullyQualifiedJavaType("R"));
+        traitType.addTypeArgument(new FullyQualifiedJavaType("D"));
+        traitType.addTypeArgument(new FullyQualifiedJavaType("M"));
         FullyQualifiedJavaType t = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, THOR_DEFAULT_SERVICE_NAME));
         t.addTypeArgument(new FullyQualifiedJavaType("T"));
-        t.addTypeArgument(new FullyQualifiedJavaType("R"));
+        t.addTypeArgument(new FullyQualifiedJavaType("D"));
+        t.addTypeArgument(new FullyQualifiedJavaType("M"));
         this.compilationUnit = new TopLevelClass(domainType);
         this.compilationUnit.addSuperInterface(t);
         this.compilationUnit.setVisibility(PUBLIC);
@@ -62,7 +65,7 @@ public final class DomainGenerated extends ThorFactory {
                 new FullyQualifiedJavaType("jakarta.annotation.Resource")
         ));
 
-        Field f = new Field("mapper", new FullyQualifiedJavaType("R"));
+        Field f = new Field("mapper", new FullyQualifiedJavaType("M"));
         f.setVisibility(PROTECTED);
         f.addAnnotation("@Resource");
         this.compilationUnit.addField(f);
