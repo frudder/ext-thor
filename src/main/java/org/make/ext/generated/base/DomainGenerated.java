@@ -30,6 +30,8 @@ public final class DomainGenerated extends ThorFactory {
 
     private final Properties properties;
 
+    private final String name;
+
     public static DomainGenerated create(Properties properties, Context context) {
         return new DomainGenerated(properties, context);
     }
@@ -38,7 +40,7 @@ public final class DomainGenerated extends ThorFactory {
         this.properties = properties;
         this.context = checkNotNull(context);
         String name = ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE);
-        name = String.join(".", name, THOR_LANG, THOR_DEFAULT_DOMAIN_NAME);
+        this.name = String.join(".", name, THOR_LANG, THOR_DEFAULT_DOMAIN_NAME);
         FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(name);
         // T extends ThorEntity<? extends Serializable>, D extends Serializable, M extends MapperAdapter<T,D>
         domainType.addTypeArgument(new FullyQualifiedJavaType("T extends ThorEntity <? extends Serializable> "));
@@ -116,7 +118,7 @@ public final class DomainGenerated extends ThorFactory {
 
     @Override
     public String getName() {
-        return "";
+        return this.name;
     }
 
     public Properties getProperties() {
