@@ -36,7 +36,7 @@ public final class TraitGenerated extends ThorFactory {
         this.context = checkNotNull(context);
         String name = ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE);
         this.name = String.join(".", name, "lang", THOR_DEFAULT_SERVICE_NAME);
-        FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(name);
+        FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(this.name);
         // ThorTrait<T extends ThorEntity<? extends Serializable>, D extends Serializable, M extends MapperAdapter<T, D>>
         traitType.addTypeArgument(new FullyQualifiedJavaType("T extends ThorEntity < ? extends Serializable>"));
         traitType.addTypeArgument(new FullyQualifiedJavaType("D extends Serializable"));
