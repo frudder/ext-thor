@@ -26,9 +26,9 @@ import java.util.function.Supplier;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestControllerAdvice
-public class ApplicativeResponseBodyAdvice implements ResponseBodyAdvice<Object> {
+public class ApplicativeBodyWrap implements ResponseBodyAdvice<Object> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApplicativeResponseBodyAdvice.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicativeBodyWrap.class);
 
     private static final Set<Class<?>> skipping =
             Set.of(

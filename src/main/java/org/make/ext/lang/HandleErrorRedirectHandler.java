@@ -21,11 +21,11 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
-public class HandleErrorRedirectController extends AbstractErrorController {
+public class HandleErrorRedirectHandler extends AbstractErrorController {
 
-  private static final Logger logger = LoggerFactory.getLogger(HandleErrorRedirectController.class);
+  private static final Logger logger = LoggerFactory.getLogger(HandleErrorRedirectHandler.class);
 
-  public HandleErrorRedirectController(final ErrorAttributes attributes) {
+  public HandleErrorRedirectHandler(final ErrorAttributes attributes) {
     super(attributes);
   }
 
