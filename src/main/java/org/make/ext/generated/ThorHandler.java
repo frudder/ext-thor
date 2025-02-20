@@ -64,7 +64,7 @@ public class ThorHandler extends ThorFactory {
         this.compilationUnit.addAnnotation("@RequestMapping(value = \"/" + resources.replace("_", "/") + "\")");
         this.compilationUnit.addAnnotation("@RequiredArgsConstructor(onConstructor = @__(@Autowired))");
         this.compilationUnit.addAnnotation(GENERATED);
-        FullyQualifiedJavaType services = new FullyQualifiedJavaType(name + "." + THOR_SERVICE+ "." + THOR_SERVICE_PREFIX + domain.getShortName());
+        FullyQualifiedJavaType services = new FullyQualifiedJavaType(name + "." + THOR_SERVICE + "." + THOR_SERVICE_PREFIX + domain.getShortName());
         Field f = new Field("domain", services);
         f.setVisibility(PRIVATE);
         f.setFinal(true);
@@ -79,6 +79,8 @@ public class ThorHandler extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RestController"),
                 new FullyQualifiedJavaType("java.io.Serializable"),
                 new FullyQualifiedJavaType("java.util.List"),
+                new FullyQualifiedJavaType("java.util.function.Supplier"),
+                new FullyQualifiedJavaType("java.util.function.BooleanSupplier"),
                 router,
                 anyType,
                 services
@@ -87,7 +89,11 @@ public class ThorHandler extends ThorFactory {
         Method find = new Method("find");
         find.setVisibility(PUBLIC);
         find.addAnnotation("@Override");
-        find.setReturnType(anyType);
+        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("Supplier");
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List");
+        parameterType.addTypeArgument(anyType);
+        returnType.addTypeArgument(parameterType);
+        find.setReturnType(returnType);
         FullyQualifiedJavaType item = new FullyQualifiedJavaType("List");
         item.addTypeArgument(new FullyQualifiedJavaType(Serializable.class.getName()));
         Parameter parameter = new Parameter(item, "item");
@@ -98,31 +104,32 @@ public class ThorHandler extends ThorFactory {
         Method seek = new Method("find");
         seek.setVisibility(PUBLIC);
         seek.addAnnotation("@Override");
-        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("List");
-        returnType.addTypeArgument(anyType);
         seek.setReturnType(returnType);
         seek.getParameters().addAll(ImmutableList.of(
                 new Parameter(new FullyQualifiedJavaType("Integer"), "index"),
                 new Parameter(new FullyQualifiedJavaType("Integer"), "size"),
                 new Parameter(new FullyQualifiedJavaType(domain.getShortName() + "Value"), "value")
         ));
-        seek.addBodyLine("return List.of();");
+        seek.addBodyLine("return null;");
         this.compilationUnit.addMethod(seek);
 
         Method remove = new Method("remove");
         remove.setVisibility(PUBLIC);
         remove.addAnnotation("@Override");
-        remove.setReturnType(new FullyQualifiedJavaType("boolean"));
-        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List");
+        returnType = new FullyQualifiedJavaType("BooleanSupplier");
+        remove.setReturnType(returnType);
+        parameterType = new FullyQualifiedJavaType("List");
         parameterType.addTypeArgument(new FullyQualifiedJavaType(Serializable.class.getName()));
         remove.addParameter(new Parameter(parameterType, "item"));
-        remove.addBodyLine("return false;");
+        remove.addBodyLine("return null;");
         this.compilationUnit.addMethod(remove);
 
         Method create = new Method("create");
         create.setVisibility(PUBLIC);
         create.addAnnotation("@Override");
-        create.setReturnType(anyType);
+        returnType = new FullyQualifiedJavaType("Supplier");
+        returnType.addTypeArgument(anyType);
+        create.setReturnType(returnType);
         create.addParameter(new Parameter(anyType, "body"));
         create.addBodyLine("return null;");
         this.compilationUnit.addMethod(create);
@@ -130,13 +137,15 @@ public class ThorHandler extends ThorFactory {
         Method bulk = new Method("create");
         bulk.setVisibility(PUBLIC);
         bulk.addAnnotation("@Override");
-        FullyQualifiedJavaType rType = new FullyQualifiedJavaType("List");
-        rType.addTypeArgument(anyType);
-        bulk.setReturnType(rType);
+        returnType = new FullyQualifiedJavaType("Supplier");
+        parameterType = new FullyQualifiedJavaType("List");
+        parameterType.addTypeArgument(anyType);
+        returnType.addTypeArgument(parameterType);
+        bulk.setReturnType(returnType);
         FullyQualifiedJavaType pType = new FullyQualifiedJavaType("List");
         pType.addTypeArgument(anyType);
         bulk.addParameter(new Parameter(pType, "body"));
-        bulk.addBodyLine("return List.of();");
+        bulk.addBodyLine("return null;");
         this.compilationUnit.addMethod(bulk);
     }
 
