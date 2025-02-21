@@ -210,6 +210,29 @@ public final class MapperGenerated extends ThorFactory {
         from.setReturnType(returnType);
         this.compilationUnit.addMethod(from);
 
+        Method deleteAll = new Method("deleteAll");
+        deleteAll.addAnnotation(GENERATED);
+        deleteAll.setAbstract(true);
+        deleteAll.setVisibility(JavaVisibility.DEFAULT);
+        parameterType = new FullyQualifiedJavaType("List");
+        parameterType.addTypeArgument(new FullyQualifiedJavaType("ID"));
+        deleteAll.addParameter(new Parameter(parameterType, "id_"));
+        deleteAll.setReturnType(new FullyQualifiedJavaType("int"));
+        this.compilationUnit.addMethod(deleteAll);
+
+        Method findAll = new Method("findAll");
+        findAll.addAnnotation(GENERATED);
+        findAll.setAbstract(true);
+        findAll.setVisibility(JavaVisibility.DEFAULT);
+        parameterType = new FullyQualifiedJavaType("List");
+        parameterType.addTypeArgument(new FullyQualifiedJavaType("ID"));
+        findAll.addParameter(new Parameter(parameterType, "id_"));
+
+        returnType = new FullyQualifiedJavaType("List");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
+        findAll.setReturnType(returnType);
+        this.compilationUnit.addMethod(findAll);
+
         imported.addAll(Sets.newHashSet(
                 new FullyQualifiedJavaType("java.util.Collection"),
                 new FullyQualifiedJavaType("java.util.List"),

@@ -1,11 +1,13 @@
 package org.make.ext.generated.util;
 
+import com.squareup.javapoet.CodeBlock;
 import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.Method;
+import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.internal.util.JavaBeansUtil;
 
@@ -47,7 +49,8 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
         if (!introspectedTable.hasPrimaryKeyColumns())
             throw new IllegalArgumentException();
         List<IntrospectedColumn> columns = introspectedTable.getPrimaryKeyColumns();
-        mapper.addTypeArgument(columns.get(0).getFullyQualifiedJavaType());
+        IntrospectedColumn primaryKey = columns.get(0);
+        mapper.addTypeArgument(primaryKey.getFullyQualifiedJavaType());
         compilationUnit.getSuperInterfaceTypes().clear();
         compilationUnit.addSuperInterface(mapper);
         compilationUnit.addImportedType(mapper);
@@ -73,7 +76,39 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
         from.setReturnType(returnType);
         from.addBodyLine("return " + JavaBeansUtil.getValidPropertyName(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()).getShortName()) + ";");
         compilationUnit.addMethod(from);
-        compilationUnit.addImportedTypes(Set.of(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.AliasableSqlTable")));
+        compilationUnit.addImportedTypes(Set.of(
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.AliasableSqlTable"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlBuilder")
+        ));
+
+        Method deleteAll = new Method("deleteAll");
+        deleteAll.addAnnotation(GENERATED);
+        deleteAll.addAnnotation("@Override");
+        deleteAll.setDefault(true);
+        deleteAll.setReturnType(new FullyQualifiedJavaType("int"));
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List");
+        parameterType.addTypeArgument(primaryKey.getFullyQualifiedJavaType());
+        deleteAll.addParameter(new Parameter(parameterType, "id_"));
+        deleteAll.addBodyLine(CodeBlock.builder()
+                .addStatement("return delete(c -> c.where(id, SqlBuilder.isIn(id_)))")
+                .build().toString());
+        compilationUnit.addMethod(deleteAll);
+
+
+        Method findAll = new Method("findAll");
+        findAll.addAnnotation(GENERATED);
+        findAll.addAnnotation("@Override");
+        findAll.setDefault(true);
+        parameterType = new FullyQualifiedJavaType("List");
+        parameterType.addTypeArgument(primaryKey.getFullyQualifiedJavaType());
+        findAll.addParameter(new Parameter(parameterType, "id_"));
+        returnType = new FullyQualifiedJavaType("List");
+        returnType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+        findAll.setReturnType(returnType);
+        findAll.addBodyLine(CodeBlock.builder()
+                .addStatement("return select(it -> it.where(id, SqlBuilder.isIn(id_)))")
+                .build().toString());
+        compilationUnit.addMethod(findAll);
         return compilationUnit;
     }
 }
