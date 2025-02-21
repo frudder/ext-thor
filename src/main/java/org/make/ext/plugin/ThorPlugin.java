@@ -11,6 +11,7 @@ import org.make.ext.generated.lang.MapperGenerated;
 import org.make.ext.generated.lang.RouteGenerated;
 import org.make.ext.generated.lang.TraitGenerated;
 import org.make.ext.generated.lang.util.ApplicativeGenerated;
+import org.make.ext.generated.lang.util.DefaultErrorHandlerGenerated;
 import org.make.ext.generated.lang.util.ErrorRedirectGenerated;
 import org.make.ext.generated.lang.util.ThorWrapExceptionGenerated;
 import org.make.ext.generated.lang.util.ValueObjectWrapGenerated;
@@ -38,6 +39,11 @@ public final class ThorPlugin extends PluginAdapter {
 
     }
 
+    /**
+     * Java SPI ?
+     * @see java.util.ServiceLoader
+     * @return List
+     */
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles() {
         List<ThorFactory> iterable = newArrayList(
@@ -49,7 +55,8 @@ public final class ThorPlugin extends PluginAdapter {
                 ApplicativeGenerated.create(properties, context),
                 ValueObjectWrapGenerated.create(properties, context),
                 ThorWrapExceptionGenerated.create(properties, context),
-                ErrorRedirectGenerated.create(properties, context)
+                ErrorRedirectGenerated.create(properties, context),
+                DefaultErrorHandlerGenerated.create(properties, context)
         );
         return iterable.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }
