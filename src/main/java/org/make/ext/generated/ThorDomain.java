@@ -13,7 +13,11 @@ import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_DOMAIN_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_INTERNAL_NAME;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_DEFAULT_SERVICE_SUFFIX;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_SERVICE;
+import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_SERVICE_PREFIX;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_TARGET_PACKAGE;
 import static org.mybatis.generator.api.dom.java.JavaVisibility.DEFAULT;
 
@@ -35,11 +39,11 @@ public class ThorDomain extends ThorFactory {
         this.properties = properties;
         this.context = context;
         this.introspectedTable = introspectedTable;
-        String name = String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), "services");
+        String name = String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_SERVICE);
         FullyQualifiedJavaType domainType = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
-        FullyQualifiedJavaType index = new FullyQualifiedJavaType(name + "." + domainType.getShortName() + "Domain");
+        FullyQualifiedJavaType index = new FullyQualifiedJavaType(name + "." + THOR_DEFAULT_INTERNAL_NAME + "." + domainType.getShortName() + THOR_DEFAULT_SERVICE_SUFFIX);
         this.compilationUnit = new TopLevelClass(index);
-        FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(name + "." + "I" + domainType.getShortName());
+        FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(name + "." + THOR_SERVICE_PREFIX + domainType.getShortName());
         this.compilationUnit.addJavaDocLine("/** package **/");
         this.compilationUnit.setVisibility(DEFAULT);
         this.compilationUnit.addSuperInterface(traitType);

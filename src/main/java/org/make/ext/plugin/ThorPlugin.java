@@ -1,8 +1,8 @@
 package org.make.ext.plugin;
 
-import org.make.ext.generated.ThorHandler;
 import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorFactory;
+import org.make.ext.generated.ThorHandler;
 import org.make.ext.generated.ThorTrait;
 import org.make.ext.generated.ThorValue;
 import org.make.ext.generated.lang.DomainGenerated;
@@ -10,6 +10,10 @@ import org.make.ext.generated.lang.EntityGenerated;
 import org.make.ext.generated.lang.MapperGenerated;
 import org.make.ext.generated.lang.RouteGenerated;
 import org.make.ext.generated.lang.TraitGenerated;
+import org.make.ext.generated.lang.util.ApplicativeGenerated;
+import org.make.ext.generated.lang.util.ErrorRedirectGenerated;
+import org.make.ext.generated.lang.util.ThorWrapExceptionGenerated;
+import org.make.ext.generated.lang.util.ValueObjectWrapGenerated;
 import org.make.ext.generated.util.RichJavaClientCompilationUnit;
 import org.make.ext.generated.util.RichJavaModelCompilationUnit;
 import org.mybatis.generator.api.GeneratedFile;
@@ -41,7 +45,11 @@ public final class ThorPlugin extends PluginAdapter {
                 RouteGenerated.create(properties, context),
                 MapperGenerated.create(properties, context),
                 TraitGenerated.create(properties, context),
-                DomainGenerated.create(properties, context)
+                DomainGenerated.create(properties, context),
+                ApplicativeGenerated.create(properties, context),
+                ValueObjectWrapGenerated.create(properties, context),
+                ThorWrapExceptionGenerated.create(properties, context),
+                ErrorRedirectGenerated.create(properties, context)
         );
         return iterable.stream().map(ThorFactory::make).collect(toUnmodifiableList());
     }

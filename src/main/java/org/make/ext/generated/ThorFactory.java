@@ -1,6 +1,7 @@
 package org.make.ext.generated;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.checkerframework.checker.index.qual.PolyUpperBound;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,10 @@ public abstract class ThorFactory {
         public static final String THOR_DEFAULT_POJO_SUFFIX = "Value";
 
         public static final String THOR_DEFAULT_CONTROLLER_SUFFIX = "Controller";
+
+        public static final String THOR_DEFAULT_INTERNAL_NAME = "internal";
+
+        public static final String THOR_DEFAULT_SERVICE_SUFFIX = "Domain";
 
         public static String getProperty(Properties properties, String name) {
             return checkNotNull(properties).getProperty(name);
