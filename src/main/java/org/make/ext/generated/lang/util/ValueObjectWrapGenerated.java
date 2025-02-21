@@ -10,6 +10,7 @@ import org.mybatis.generator.api.dom.java.TypeParameter;
 import org.mybatis.generator.config.Context;
 
 import java.util.Properties;
+import java.util.Set;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.make.ext.generated.ThorFactory.ThorAttribute.THOR_LANG;
@@ -55,6 +56,10 @@ public class ValueObjectWrapGenerated extends ThorFactory {
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setReturnType(new FullyQualifiedJavaType("T"));
         this.compilationUnit.addMethod(method);
+
+        this.compilationUnit.addImportedTypes(Set.of(
+                new FullyQualifiedJavaType("jakarta.annotation.Generated")
+        ));
 
     }
 
