@@ -71,20 +71,7 @@ public class DefaultErrorHandler implements ErrorHandler {
     @ResponseStatus(value = BAD_REQUEST)
     public ResponseEntity<Applicative<String>> fallback(final MethodArgumentNotValidException err) {
         handleError(err);
-        // fmt:off
-        final String error =
-                err.hasFieldErrors()
-                        ? Stream.ofAll(err.getFieldErrors())
-                        .map(it -> String.format(
-                                "%s.%s: %s",
-                                Option(err.getTarget())
-                                        .map(h -> h.getClass().getSimpleName())
-                                        .getOrElse(it.getObjectName()),
-                                it.getField(),
-                                it.getDefaultMessage()))
-                        .mkString(";")
-                        : nullToEmpty(err.getMessage());
-        // fmt:on
+        final String error = err.hasFieldErrors() ? Stream.ofAll(err.getFieldErrors()).map(it -> String.format("%s.%s: %s", Option(err.getTarget()).map(h -> h.getClass().getSimpleName()).getOrElse(it.getObjectName()), it.getField(), it.getDefaultMessage())).mkString(";") : nullToEmpty(err.getMessage());
         return badRequest().body(Applicative.from(BAD_REQUEST.value(), error));
     }
 
@@ -93,13 +80,7 @@ public class DefaultErrorHandler implements ErrorHandler {
     public ResponseEntity<Applicative<String>> fallback(final ConstraintViolationException err) {
         handleError(err);
         final Set<ConstraintViolation<?>> iter = err.getConstraintViolations();
-        final String error =
-                CollectionUtils.isEmpty(iter)
-                        ? nullToEmpty(err.getMessage())
-                        : Stream.ofAll(iter)
-                        .map(
-                                it -> String.format("%s: %s", it.getPropertyPath().toString(), it.getMessage()))
-                        .mkString(";");
+        final String error = CollectionUtils.isEmpty(iter) ? nullToEmpty(err.getMessage()) : Stream.ofAll(iter).map(it -> String.format("%s: %s", it.getPropertyPath().toString(), it.getMessage())).mkString(";");
         return badRequest().body(Applicative.from(BAD_REQUEST.value(), error));
     }
 

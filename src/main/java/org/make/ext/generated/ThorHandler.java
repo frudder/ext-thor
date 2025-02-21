@@ -3,6 +3,7 @@ package org.make.ext.generated;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -11,7 +12,6 @@ import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.Context;
 
-import java.io.Serializable;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -58,6 +58,10 @@ public class ThorHandler extends ThorFactory {
         FullyQualifiedJavaType anyType = new FullyQualifiedJavaType(String.join(".", name, THOR_VIEWS, domain.getShortName() + THOR_DEFAULT_POJO_SUFFIX));
         FullyQualifiedJavaType router = new FullyQualifiedJavaType(String.join(".", name, THOR_LANG, THOR_DEFAULT_CONTROLLER_NAME));
         router.addTypeArgument(anyType);
+        if (!introspectedTable.hasPrimaryKeyColumns())
+            throw new IllegalArgumentException();
+        IntrospectedColumn primaryKey = introspectedTable.getPrimaryKeyColumns().get(0);
+        router.addTypeArgument(primaryKey.getFullyQualifiedJavaType());
         this.compilationUnit.addSuperInterface(router);
         this.compilationUnit.addAnnotation("@Tags(value = { @Tag(name = \"" + getCamelCaseString(resources, true) + "\")" + "})");
         this.compilationUnit.addAnnotation("@RestController");
@@ -95,7 +99,7 @@ public class ThorHandler extends ThorFactory {
         returnType.addTypeArgument(parameterType);
         find.setReturnType(returnType);
         FullyQualifiedJavaType item = new FullyQualifiedJavaType("List");
-        item.addTypeArgument(new FullyQualifiedJavaType(Serializable.class.getName()));
+        item.addTypeArgument(primaryKey.getFullyQualifiedJavaType());
         Parameter parameter = new Parameter(item, "item");
         find.addParameter(parameter);
         find.addBodyLine("return null;");
@@ -119,7 +123,7 @@ public class ThorHandler extends ThorFactory {
         returnType = new FullyQualifiedJavaType("BooleanSupplier");
         remove.setReturnType(returnType);
         parameterType = new FullyQualifiedJavaType("List");
-        parameterType.addTypeArgument(new FullyQualifiedJavaType(Serializable.class.getName()));
+        parameterType.addTypeArgument(primaryKey.getFullyQualifiedJavaType());
         remove.addParameter(new Parameter(parameterType, "item"));
         remove.addBodyLine("return null;");
         this.compilationUnit.addMethod(remove);

@@ -46,6 +46,7 @@ public final class RouteGenerated extends ThorFactory {
         this.context = checkNotNull(context);
         this.name = isNullOrEmpty(name) ? THOR_DEFAULT_CONTROLLER_NAME : name;
         FullyQualifiedJavaType token = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, this.name));
+        token.addTypeArgument(new FullyQualifiedJavaType("E"));
         token.addTypeArgument(new FullyQualifiedJavaType("T"));
         this.compilationUnit = new Interface(token);
         this.compilationUnit.setVisibility(PUBLIC);
@@ -64,7 +65,6 @@ public final class RouteGenerated extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestBody"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestMapping"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestParam"),
-                new FullyQualifiedJavaType("java.io.Serializable"),
                 new FullyQualifiedJavaType("java.util.List"),
                 new FullyQualifiedJavaType("java.util.function.Supplier"),
                 new FullyQualifiedJavaType("java.util.function.BooleanSupplier")
@@ -78,10 +78,10 @@ public final class RouteGenerated extends ThorFactory {
         find.setAbstract(true);
         find.addAnnotation("@GetMapping(value = \"/{id}\")");
         FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("Supplier");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("List<T>"));
+        returnType.addTypeArgument(new FullyQualifiedJavaType("List<E>"));
         find.setReturnType(returnType);
         FullyQualifiedJavaType item = new FullyQualifiedJavaType("List");
-        item.addTypeArgument(new FullyQualifiedJavaType("Serializable"));
+        item.addTypeArgument(new FullyQualifiedJavaType("T"));
         Parameter parameter = new Parameter(item, "item");
         parameter.addAnnotation("@PathVariable(value = \"id\")");
         parameter.addAnnotation("@NotEmpty");
@@ -100,7 +100,7 @@ public final class RouteGenerated extends ThorFactory {
         parameter = new Parameter(new FullyQualifiedJavaType("Integer"), "size");
         parameter.addAnnotation("@RequestParam(value = \"size\", defaultValue = \"10\")");
         parameters.add(parameter);
-        parameter = new Parameter(new FullyQualifiedJavaType("T"), "value");
+        parameter = new Parameter(new FullyQualifiedJavaType("E"), "value");
         parameter.addAnnotation("@RequestParam(required = false)");
         parameters.add(parameter);
         seek.getParameters().addAll(parameters);
@@ -112,7 +112,7 @@ public final class RouteGenerated extends ThorFactory {
         remove.setReturnType(returnType);
         remove.addAnnotation("@DeleteMapping(value = \"/{id}\")");
         item = new FullyQualifiedJavaType("List");
-        item.addTypeArgument(new FullyQualifiedJavaType("Serializable"));
+        item.addTypeArgument(new FullyQualifiedJavaType("T"));
         parameter = new Parameter(item, "item");
         parameter.addAnnotation("@PathVariable(value = \"id\")");
         parameter.addAnnotation("@NotEmpty");
@@ -122,10 +122,10 @@ public final class RouteGenerated extends ThorFactory {
         Method create = new Method("create");
         create.setAbstract(true);
         returnType = new FullyQualifiedJavaType("Supplier");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
+        returnType.addTypeArgument(new FullyQualifiedJavaType("E"));
         create.setReturnType(returnType);
         create.addAnnotation("@PutMapping");
-        FullyQualifiedJavaType body = new FullyQualifiedJavaType("T");
+        FullyQualifiedJavaType body = new FullyQualifiedJavaType("E");
         parameter = new Parameter(body, "body");
         parameter.addAnnotation("@RequestBody");
         parameter.addAnnotation("@Validated");
@@ -135,11 +135,11 @@ public final class RouteGenerated extends ThorFactory {
         Method bulk = new Method("create");
         bulk.setAbstract(true);
         returnType = new FullyQualifiedJavaType("Supplier");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("List<T>"));
+        returnType.addTypeArgument(new FullyQualifiedJavaType("List<E>"));
         bulk.setReturnType(returnType);
         bulk.addAnnotation("@PutMapping(value = \"/bulk\")");
         body = new FullyQualifiedJavaType("List");
-        body.addTypeArgument(new FullyQualifiedJavaType("T"));
+        body.addTypeArgument(new FullyQualifiedJavaType("E"));
         parameter = new Parameter(body, "body");
         parameter.addAnnotation("@RequestBody");
         parameter.addAnnotation("@Validated");
