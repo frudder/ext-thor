@@ -1,5 +1,6 @@
 package org.make.ext.plugin;
 
+import com.google.common.collect.Lists;
 import org.make.ext.generated.ThorDomain;
 import org.make.ext.generated.ThorFactory;
 import org.make.ext.generated.ThorHandler;
@@ -17,13 +18,16 @@ import org.make.ext.generated.lang.util.ThorWrapExceptionGenerated;
 import org.make.ext.generated.lang.util.ValueObjectWrapGenerated;
 import org.make.ext.generated.util.RichJavaClientCompilationUnit;
 import org.make.ext.generated.util.RichJavaModelCompilationUnit;
+import org.make.ext.internal.spi.ThorProvider;
 import org.mybatis.generator.api.GeneratedFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -41,11 +45,26 @@ public final class ThorPlugin extends PluginAdapter {
 
     /**
      * Java SPI ?
-     * @see java.util.ServiceLoader
+     *
      * @return List
+     * @see java.util.ServiceLoader
      */
     @Override
     public List<GeneratedFile> contextGenerateAdditionalFiles() {
+        ServiceLoader<ThorProvider> services = ServiceLoader.load(ThorProvider.class);
+        List<GeneratedFile> generatedFiles = Lists.newArrayListWithCapacity(16 * 2);
+
+
+
+//        services.stream().mapMulti((it,next) -> {
+//            ThorProvider provider = it.get();
+//            provider.setProperties(properties);
+//            provider.setContext(context);
+//            next.accept(provider.make());
+//
+//        }).toList();
+
+
         List<ThorFactory> iterable = newArrayList(
                 EntityGenerated.create(properties, context),
                 RouteGenerated.create(properties, context),

@@ -57,6 +57,7 @@ public final class RouteGenerated extends ThorFactory {
         this.compilationUnit.addImportedTypes(newHashSet(
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
                 new FullyQualifiedJavaType("jakarta.validation.constraints.NotEmpty"),
+                new FullyQualifiedJavaType("org.springframework.data.domain.Page"),
                 new FullyQualifiedJavaType("org.springframework.validation.annotation.Validated"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.DeleteMapping"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.GetMapping"),
@@ -92,6 +93,8 @@ public final class RouteGenerated extends ThorFactory {
         Method seek = new Method("find");
         seek.setAbstract(true);
         seek.addAnnotation("@GetMapping");
+        returnType = new FullyQualifiedJavaType("Supplier");
+        returnType.addTypeArgument(new FullyQualifiedJavaType("Page<E>"));
         seek.setReturnType(returnType);
         List<Parameter> parameters = Lists.newArrayListWithCapacity(16);
         parameter = new Parameter(new FullyQualifiedJavaType("Integer"), "index");

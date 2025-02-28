@@ -36,6 +36,8 @@ public abstract class ThorFactory {
 
         public static final String THOR_SERVICE = "services";
 
+        public static final String THOR_DOMAIN = "domain";
+
         public static final String THOR_SERVICE_PREFIX = "I";
 
         public static final String THOR_CONTROLLER = "controller";

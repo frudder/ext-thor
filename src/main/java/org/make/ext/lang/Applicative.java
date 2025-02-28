@@ -63,12 +63,7 @@ public final class Applicative<T>
     }
 
     public static <T> Applicative<T> apply(final Integer errorValue, final Supplier<T> function) {
-        return Try(function::get)
-                .fold(
-                        err -> {
-                            throw new ThorWrapException(errorValue, err);
-                        },
-                        Applicative::from);
+        return Try(function::get).fold(err -> {throw new ThorWrapException(errorValue, err);}, Applicative::from);
     }
 
     @Override

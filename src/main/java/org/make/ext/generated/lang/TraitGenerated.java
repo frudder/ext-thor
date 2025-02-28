@@ -45,6 +45,14 @@ public final class TraitGenerated extends ThorFactory {
         this.compilationUnit.setVisibility(PUBLIC);
         this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addImportedTypes(newHashSet(
+
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.delete.DeleteDSLCompleter"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.CountDSLCompleter"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.SelectDSLCompleter"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.update.UpdateDSLCompleter"),
+                new FullyQualifiedJavaType("org.springframework.data.domain.Page"),
+                new FullyQualifiedJavaType("org.springframework.data.domain.Pageable"),
+
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
                 new FullyQualifiedJavaType("java.io.Serializable"),
                 new FullyQualifiedJavaType("java.util.Optional"),
@@ -52,30 +60,93 @@ public final class TraitGenerated extends ThorFactory {
         ));
 
         Method method = new Method("findAll");
-        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("List");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
-        method.setReturnType(returnType);
         method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
         this.compilationUnit.addMethod(method);
 
         method = new Method("findAll");
         method.setAbstract(true);
-        method.setReturnType(returnType);
-        method.addParameter(new Parameter(new FullyQualifiedJavaType("Integer"), "offset"));
-        method.addParameter(new Parameter(new FullyQualifiedJavaType("Integer"), "limit"));
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<D>"), "id_"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findAll");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "function"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findAll");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("Page<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("Pageable"), "peek"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "function"));
         this.compilationUnit.addMethod(method);
 
         method = new Method("findOne");
         method.setAbstract(true);
-        returnType = new FullyQualifiedJavaType("Optional");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
-        method.setReturnType(returnType);
+        method.setReturnType(new FullyQualifiedJavaType("Optional<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "function"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findOne");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("Optional<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("D"), "_id"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("count");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("Long"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("CountDSLCompleter"), "function"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("create");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("T"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "entity"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("create");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<T>"), "entities"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("delete");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
         method.addParameter(new Parameter(new FullyQualifiedJavaType("D"), "id_"));
         this.compilationUnit.addMethod(method);
 
-        method = new Method("findOne");
+        method = new Method("delete");
         method.setAbstract(true);
-        method.setReturnType(returnType);
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<D>"), "id_"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("delete");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("DeleteDSLCompleter"), "function"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("save");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("T"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "entity"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("save");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<T>"), "entities"));
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("save");
+        method.setAbstract(true);
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("UpdateDSLCompleter"), "function"));
         this.compilationUnit.addMethod(method);
     }
 

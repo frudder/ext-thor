@@ -1,5 +1,6 @@
 package org.make.ext.generated.lang;
 
+import com.squareup.javapoet.CodeBlock;
 import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.Field;
@@ -63,7 +64,19 @@ public final class DomainGenerated extends ThorFactory {
                 new FullyQualifiedJavaType("java.io.Serializable"),
                 new FullyQualifiedJavaType("java.util.Optional"),
                 new FullyQualifiedJavaType("java.util.List"),
-                new FullyQualifiedJavaType("jakarta.annotation.Resource")
+                new FullyQualifiedJavaType("jakarta.annotation.Resource"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.delete.DeleteDSLCompleter"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.CountDSLCompleter"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.SelectDSLCompleter"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.update.UpdateDSLCompleter"),
+                new FullyQualifiedJavaType("org.springframework.data.domain.Page"),
+                new FullyQualifiedJavaType("org.springframework.data.domain.Pageable"),
+                new FullyQualifiedJavaType("org.springframework.transaction.annotation.Transactional"),
+                new FullyQualifiedJavaType("javax.annotation.CheckReturnValue")
+        ));
+
+        this.compilationUnit.addStaticImports(newHashSet(
+                "org.springframework.util.CollectionUtils.isEmpty"
         ));
 
         Field f = new Field("mapper", new FullyQualifiedJavaType("M"));
@@ -71,39 +84,170 @@ public final class DomainGenerated extends ThorFactory {
         f.addAnnotation("@Resource");
         this.compilationUnit.addField(f);
 
+
         Method method = new Method("findAll");
-        method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
-        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("List");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
-        method.setReturnType(returnType);
-        method.addBodyLine("return List.of();");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addBodyLine(CodeBlock.builder()
+                .addStatement("return findAll(it -> it)")
+                .build().toString());
         this.compilationUnit.addMethod(method);
 
         method = new Method("findAll");
-        method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
-        method.setReturnType(returnType);
-        method.addParameter(new Parameter(new FullyQualifiedJavaType("Integer"), "offset"));
-        method.addParameter(new Parameter(new FullyQualifiedJavaType("Integer"), "limit"));
-        method.addBodyLine("return List.of();");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<D>"), "id_"));
+        method.addBodyLine(CodeBlock.builder()
+                .addStatement("return isEmpty(id_) ? List.of() : mapper.findAll(id_)")
+                .build()
+                .toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findAll");
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "function"));
+        method.addBodyLine(CodeBlock.builder()
+                .addStatement("return mapper.select(function)")
+                .build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findAll");
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("Page<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("Pageable"), "peek"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "function"));
+        method.addBodyLine(CodeBlock.builder().addStatement("throw new UnsupportedOperationException()").build().toString());
         this.compilationUnit.addMethod(method);
 
         method = new Method("findOne");
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("Optional<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("SelectDSLCompleter"), "function"));
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.selectOne(function)").build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("findOne");
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("Optional<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("D"), "_id"));
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.selectByPrimaryKey(_id)").build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("count");
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(readOnly = true)");
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("Long"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("CountDSLCompleter"), "function"));
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.count(function)").build().toString());
+        this.compilationUnit.addMethod(method);
+
+
+        method = new Method("create");
         method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
-        returnType = new FullyQualifiedJavaType("Optional");
-        returnType.addTypeArgument(new FullyQualifiedJavaType("T"));
-        method.setReturnType(returnType);
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.addAnnotation("@CheckReturnValue");
+        method.setReturnType(new FullyQualifiedJavaType("T"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "entity"));
+        method.addBodyLine(CodeBlock.builder()
+                .beginControlFlow("if (mapper.insert(entity) > 0)")
+                .addStatement("return entity")
+                .endControlFlow()
+                .addStatement("return null")
+                .build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("create");
+        method.setVisibility(PUBLIC);
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.addAnnotation("@CheckReturnValue");
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<T>"), "entities"));
+        method.addBodyLine(CodeBlock.builder()
+                .beginControlFlow("if (isEmpty(entities))")
+                .addStatement("return List.of()")
+                .endControlFlow()
+                .beginControlFlow("if (mapper.insertMultiple(entities) > 0)")
+                .addStatement(" return entities")
+                .endControlFlow()
+                .addStatement("return List.of()")
+                .build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("delete");
+        method.setVisibility(PUBLIC);
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
         method.addParameter(new Parameter(new FullyQualifiedJavaType("D"), "id_"));
-        method.addBodyLine("return Optional.empty();");
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.deleteByPrimaryKey(id_) > 0").build().toString());
         this.compilationUnit.addMethod(method);
 
-        method = new Method("findOne");
+        method = new Method("delete");
         method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
-        method.setReturnType(returnType);
-        method.addBodyLine("return Optional.empty();");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<D>"), "id_"));
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.deleteAll(id_) > 0").build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("delete");
+        method.setVisibility(PUBLIC);
+        method.addAnnotation("@Override");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("DeleteDSLCompleter"), "function"));
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.delete(function) > 0").build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("save");
+        method.setVisibility(PUBLIC);
+        method.addAnnotation("@Override");
+        method.addAnnotation("@CheckReturnValue");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.setReturnType(new FullyQualifiedJavaType("T"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "entity"));
+        method.addBodyLine(CodeBlock.builder().
+                beginControlFlow("if (mapper.updateByPrimaryKey(entity) > 0)")
+                .addStatement("return entity")
+                .endControlFlow().
+                addStatement("return null").build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("save");
+        method.setVisibility(PUBLIC);
+        method.addAnnotation("@Override");
+        method.addAnnotation("@CheckReturnValue");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("List<T>"), "entities"));
+        method.addBodyLine(CodeBlock.builder().addStatement("throw new UnsupportedOperationException()").build().toString());
+        this.compilationUnit.addMethod(method);
+
+        method = new Method("save");
+        method.setVisibility(PUBLIC);
+        method.addAnnotation("@Override");
+        method.addAnnotation("@CheckReturnValue");
+        method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("UpdateDSLCompleter"), "function"));
+        method.addBodyLine(CodeBlock.builder().addStatement("return mapper.update(function) > 0").build().toString());
         this.compilationUnit.addMethod(method);
     }
 

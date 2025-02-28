@@ -31,8 +31,7 @@ public final class ThorWrapException extends RuntimeException implements ErrorHa
     }
 
     public static ThorWrapException of(@Nullable final Integer errorValue, final Throwable err) {
-        return new ThorWrapException(
-                isEmpty(errorValue) ? INTERNAL_SERVER_ERROR.value() : errorValue, err);
+        return new ThorWrapException(isEmpty(errorValue) ? INTERNAL_SERVER_ERROR.value() : errorValue, err);
     }
 
     public static ThorWrapException of(final Throwable err) {

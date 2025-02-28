@@ -233,10 +233,19 @@ public final class MapperGenerated extends ThorFactory {
         findAll.setReturnType(returnType);
         this.compilationUnit.addMethod(findAll);
 
+        Method method = new Method("columns");
+        method.addAnnotation(GENERATED);
+        method.setAbstract(true);
+        method.setVisibility(JavaVisibility.DEFAULT);
+        returnType = new FullyQualifiedJavaType("BasicColumn[]");
+        method.setReturnType(returnType);
+        this.compilationUnit.addMethod(method);
+
         imported.addAll(Sets.newHashSet(
                 new FullyQualifiedJavaType("java.util.Collection"),
                 new FullyQualifiedJavaType("java.util.List"),
-                new FullyQualifiedJavaType("java.util.Optional")
+                new FullyQualifiedJavaType("java.util.Optional"),
+                new FullyQualifiedJavaType("org.mybatis.dynamic.sql.BasicColumn")
         ));
         this.compilationUnit.addImportedTypes(imported);
     }

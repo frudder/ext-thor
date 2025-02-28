@@ -6,6 +6,7 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.config.Context;
@@ -109,6 +110,23 @@ public final class RichJavaClientCompilationUnit extends RichInterfaceVisitor {
                 .addStatement("return select(it -> it.where(id, SqlBuilder.isIn(id_)))")
                 .build().toString());
         compilationUnit.addMethod(findAll);
+
+
+
+        Method method = new Method("columns");
+        method.addAnnotation(GENERATED);
+        method.addAnnotation("@Override");
+        method.setDefault(true);
+        method.setVisibility(JavaVisibility.DEFAULT);
+        returnType = new FullyQualifiedJavaType("BasicColumn[]");
+        method.setReturnType(returnType);
+        method.addBodyLine(CodeBlock.builder()
+                        .addStatement("return selectList")
+                .build().toString());
+        compilationUnit.addMethod(method);
+
         return compilationUnit;
+
+
     }
 }

@@ -26,9 +26,9 @@ import java.util.function.Supplier;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestControllerAdvice
-public class ApplicativeBodyWrap implements ResponseBodyAdvice<Object> {
+public class ApplicativeWrapToBody implements ResponseBodyAdvice<Object> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApplicativeBodyWrap.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicativeWrapToBody.class);
 
     private static final Set<Class<?>> skipping =
             Set.of(
@@ -66,10 +66,10 @@ public class ApplicativeBodyWrap implements ResponseBodyAdvice<Object> {
             logger.debug("ContentType: {}", selectedContentType);
         }
         if (APPLICATION_JSON.isCompatibleWith(selectedContentType)) {
-            if (body.getClass().isAssignableFrom(Supplier.class)) {
+            if (Supplier.class.isAssignableFrom(body.getClass())) {
                 return Applicative.apply((Supplier<?>) body);
             }
-            if (body.getClass().isAssignableFrom(BooleanSupplier.class)) {
+            if (BooleanSupplier.class.isAssignableFrom(body.getClass())) {
                 return Applicative.from(((BooleanSupplier) body).getAsBoolean());
             }
             return Applicative.from(body);
