@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <!-- 根日志记录器 -->
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+        <!-- 自定义日志记录器 -->
+        <Logger name="org.make" level="debug" additivity="true">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>
