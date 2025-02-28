@@ -5,31 +5,35 @@
 
 <generatorConfiguration>
     <context id="thor" targetRuntime="MyBatis3DynamicSql">
-        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
-        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <property name="javaFormatter" value="org.make.ext.formatter.ThorFormatter"/>
         <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <plugin type="org.ext.plugins.ExtThorPlugin"/>
+        <plugin type="org.make.ext.plugin.ThorPlugin">
+            <property name="targetPackage" value="com.app.thor"/>
+        </plugin>
 
         <commentGenerator>
             <property name="suppressDate" value="true"/>
-            <property name="useLegacyGeneratedAnnotation" value="true"/>
+            <property name="useLegacyGeneratedAnnotation" value="false"/>
         </commentGenerator>
 
         <connectionFactory>
             <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="connectionURL"
+                      value="jdbc:mysql://127.0.0.1:3306/mydb?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+            <property name="userId" value="root"/>
+            <property name="password" value="123456"/>
         </connectionFactory>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="true"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="org.ext.example" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.app.thor.domain" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <javaClientGenerator targetPackage="org.ext.example" targetProject="src/main/java">
+        <javaClientGenerator targetPackage="com.app.thor.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
