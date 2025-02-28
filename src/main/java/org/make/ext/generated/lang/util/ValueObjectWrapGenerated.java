@@ -37,6 +37,7 @@ public class ValueObjectWrapGenerated extends ThorFactory {
         FullyQualifiedJavaType javaType = new FullyQualifiedJavaType(String.join(".", ThorAttribute.getProperty(this.properties, THOR_TARGET_PACKAGE), THOR_LANG, this.name));
         this.compilationUnit = new Interface(javaType);
         this.compilationUnit.setVisibility(JavaVisibility.PUBLIC);
+        this.compilationUnit.addAnnotation(GENERATED);
         this.compilationUnit.addTypeParameter(new TypeParameter("T"));
 
         Method method = new Method("getState");
