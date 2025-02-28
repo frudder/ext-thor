@@ -23,6 +23,7 @@ public class Thor {
 
     private final static Logger logger = LoggerFactory.getLogger(Thor.class);
 
+
     public static void main(String[] args) throws Exception {
         final List<String> warnings = newArrayList();
         try (FileChannel ch = open(Paths.get("config.xml"))) {

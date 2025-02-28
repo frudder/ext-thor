@@ -46,7 +46,7 @@ public class ThorDomain extends ThorFactory {
         FullyQualifiedJavaType traitType = new FullyQualifiedJavaType(name + "." + THOR_SERVICE_PREFIX + domainType.getShortName());
         this.compilationUnit.addJavaDocLine("/** package **/");
         this.compilationUnit.setVisibility(DEFAULT);
-        this.compilationUnit.addSuperInterface(traitType);
+        this.compilationUnit.addSuperInterface(new FullyQualifiedJavaType(traitType.getShortName()));
         this.compilationUnit.addAnnotation("@Service");
         this.compilationUnit.addAnnotation("@RequiredArgsConstructor(onConstructor = @__(@Autowired))");
         this.compilationUnit.addAnnotation(GENERATED);
@@ -71,6 +71,7 @@ public class ThorDomain extends ThorFactory {
                 new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"),
                 new FullyQualifiedJavaType("org.springframework.stereotype.Service"),
                 new FullyQualifiedJavaType("jakarta.annotation.Generated"),
+                traitType,
                 traitDomain,
                 primaryKey,
                 T,

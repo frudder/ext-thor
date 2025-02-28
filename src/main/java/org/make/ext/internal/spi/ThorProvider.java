@@ -12,5 +12,7 @@ public interface ThorProvider {
 
     void setProperties(Properties properties);
 
+    void init(Properties properties, Context context);
+
     Set<? extends GeneratedFile> make();
 }

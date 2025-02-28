@@ -146,7 +146,7 @@ public class ThorHandler extends ThorFactory {
         returnType.addTypeArgument(anyType);
         create.setReturnType(returnType);
         create.addParameter(new Parameter(anyType, "body"));
-        create.addBodyLine(CodeBlock.builder().addStatement("return () -> domain.create(body)").build().toString());
+        create.addBodyLine(CodeBlock.builder().addStatement("return () -> domain.save(body)").build().toString());
         this.compilationUnit.addMethod(create);
 
         Method bulk = new Method("create");

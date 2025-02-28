@@ -71,6 +71,7 @@ public final class DomainGenerated extends ThorFactory {
                 new FullyQualifiedJavaType("org.mybatis.dynamic.sql.update.UpdateDSLCompleter"),
                 new FullyQualifiedJavaType("org.springframework.data.domain.Page"),
                 new FullyQualifiedJavaType("org.springframework.data.domain.Pageable"),
+                new FullyQualifiedJavaType("org.springframework.util.ObjectUtils"),
                 new FullyQualifiedJavaType("org.springframework.transaction.annotation.Transactional"),
                 new FullyQualifiedJavaType("javax.annotation.CheckReturnValue")
         ));
@@ -155,7 +156,6 @@ public final class DomainGenerated extends ThorFactory {
         method.addBodyLine(CodeBlock.builder().addStatement("return mapper.count(function)").build().toString());
         this.compilationUnit.addMethod(method);
 
-
         method = new Method("create");
         method.setVisibility(PUBLIC);
         method.addAnnotation("@Override");
@@ -164,10 +164,10 @@ public final class DomainGenerated extends ThorFactory {
         method.setReturnType(new FullyQualifiedJavaType("T"));
         method.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "entity"));
         method.addBodyLine(CodeBlock.builder()
-                .beginControlFlow("if (mapper.insert(entity) > 0)")
-                .addStatement("return entity")
-                .endControlFlow()
+                .beginControlFlow("if (ObjectUtils.isEmpty(entity)) ")
                 .addStatement("return null")
+                .endControlFlow()
+                .addStatement("return mapper.insert(entity) > 0 ? entity : null")
                 .build().toString());
         this.compilationUnit.addMethod(method);
 
@@ -182,10 +182,7 @@ public final class DomainGenerated extends ThorFactory {
                 .beginControlFlow("if (isEmpty(entities))")
                 .addStatement("return List.of()")
                 .endControlFlow()
-                .beginControlFlow("if (mapper.insertMultiple(entities) > 0)")
-                .addStatement(" return entities")
-                .endControlFlow()
-                .addStatement("return List.of()")
+                .addStatement("return mapper.insertMultiple(entities) > 0 ? entities : List.of()")
                 .build().toString());
         this.compilationUnit.addMethod(method);
 
@@ -223,11 +220,9 @@ public final class DomainGenerated extends ThorFactory {
         method.addAnnotation("@Transactional(rollbackFor = Exception.class)");
         method.setReturnType(new FullyQualifiedJavaType("T"));
         method.addParameter(new Parameter(new FullyQualifiedJavaType("T"), "entity"));
-        method.addBodyLine(CodeBlock.builder().
-                beginControlFlow("if (mapper.updateByPrimaryKey(entity) > 0)")
-                .addStatement("return entity")
-                .endControlFlow().
-                addStatement("return null").build().toString());
+        method.addBodyLine(CodeBlock.builder()
+                .addStatement("return (entity.isEmpty() ? mapper.insert(entity) > 0 : mapper.updateByPrimaryKeySelective(entity) > 0) ? entity : null")
+                .build().toString());
         this.compilationUnit.addMethod(method);
 
         method = new Method("save");

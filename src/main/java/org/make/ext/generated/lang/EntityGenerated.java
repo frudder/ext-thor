@@ -1,8 +1,10 @@
 package org.make.ext.generated.lang;
 
+import com.squareup.javapoet.CodeBlock;
 import org.make.ext.generated.ThorFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.java.TypeParameter;
 import org.mybatis.generator.config.Context;
@@ -59,6 +61,8 @@ public final class EntityGenerated extends ThorFactory {
         this.compilationUnit.addImportedTypes(newHashSet(new FullyQualifiedJavaType(Serializable.class.getName()),
                 new FullyQualifiedJavaType(Date.class.getName()),
                 new FullyQualifiedJavaType("lombok.Data"),
+                new FullyQualifiedJavaType("com.google.common.base.Strings"),
+                new FullyQualifiedJavaType("com.fasterxml.jackson.annotation.JsonIgnore"),
                 new FullyQualifiedJavaType("jakarta.annotation.Generated")));
         SERIAL_VERSION_UID.apply(compilationUnit);
         PRIMARY_KEY.apply(compilationUnit);
@@ -66,6 +70,27 @@ public final class EntityGenerated extends ThorFactory {
         CREATED_BY.apply(compilationUnit);
         UPDATED_AT.apply(compilationUnit);
         LAST_MODIFIED_BY.apply(compilationUnit);
+        Method method = new Method("isEmpty");
+        method.addAnnotation(GENERATED);
+        method.setVisibility(PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("boolean"));
+        method.addBodyLine(CodeBlock.builder()
+                        .beginControlFlow("if (id == null)")
+                        .addStatement("return true")
+                        .endControlFlow()
+                        .beginControlFlow("if (id instanceof String)")
+                        .addStatement("return Strings.isNullOrEmpty((String) id)")
+                        .endControlFlow()
+                        .beginControlFlow("if (id instanceof Long)")
+                        .addStatement("return ((Long) id) == 0L")
+                        .endControlFlow()
+                        .beginControlFlow("if (id instanceof Integer)")
+                        .addStatement("return ((Integer) id) == 0")
+                        .endControlFlow()
+                        .addStatement("return false")
+                .build().toString());
+        this.compilationUnit.addMethod(method);
+
     }
 
     @Override
